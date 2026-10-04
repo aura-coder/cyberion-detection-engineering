@@ -87,6 +87,21 @@
       "techniqueID": "T1047",
       "color": "#00ff00",
       "comment": "Covered: ffffffff-6666-6666-6666-666666666666 WmiPrvSE parent process"
+    },
+    {
+      "techniqueID": "T1036.005",
+      "color": "#00ff00",
+      "comment": "Covered: 10000001-0001-0001-0001-000000000001 From Hunt 001"
+    },
+    {
+      "techniqueID": "T1047",
+      "color": "#00ff00",
+      "comment": "Covered: 10000002-0002-0002-0002-000000000002 From Hunt 001"
+    },
+    {
+      "techniqueID": "T1564.002",
+      "color": "#00ff00",
+      "comment": "Covered: 10000003-0003-0003-0003-000000000003 From Hunt 001"
     }
   ],
   "gradient": {

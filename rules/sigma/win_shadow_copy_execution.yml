@@ -1,0 +1,21 @@
+title: Process Execution From Volume Shadow Copy
+id: 10000003-0003-0003-0003-000000000003
+status: experimental
+description: Detects execution of a process whose path points into a Volume Shadow Copy via the GLOBALROOT device path, a technique used to hide malicious binaries from path-based controls and antivirus.
+references:
+  - https://attack.mitre.org/techniques/T1564/002/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.t1564.002
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    CommandLine|contains: '\Device\HarddiskVolumeShadowCopy'
+  condition: selection
+falsepositives:
+  - Backup software restoring and executing files
+  - Forensic tools analyzing shadow copies
+level: high

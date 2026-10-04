@@ -1,0 +1,1 @@
+any where process.parent.executable.caseless:"*\\WmiPrvSE.exe" and (process.command_line like~ ("*\\127.0.0.1\\ADMIN$\\*", "*\\127.0.0.1\\C$\\*", "*\\localhost\\ADMIN$\\*", "*\\localhost\\C$\\*"))

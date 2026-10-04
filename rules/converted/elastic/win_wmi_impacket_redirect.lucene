@@ -1,0 +1,1 @@
+process.parent.executable.caseless:*\\WmiPrvSE.exe AND (process.command_line:(*\\127.0.0.1\\ADMIN$\\* OR *\\127.0.0.1\\C$\\* OR *\\localhost\\ADMIN$\\* OR *\\localhost\\C$\\*))

@@ -1,0 +1,1 @@
+(process.executable.caseless:(*\\WINWORD.EXE OR *\\EXCEL.EXE OR *\\POWERPNT.EXE OR *\\OUTLOOK.EXE)) AND (process.executable.caseless:(*\\AppData\\* OR *\\Temp\\* OR *\\Downloads\\* OR *\\Public\\*))

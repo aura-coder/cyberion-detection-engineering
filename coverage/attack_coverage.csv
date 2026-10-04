@@ -15,3 +15,6 @@ Execution,T1204.002,Malicious File,Covered,cccccccc-3333-3333-3333-333333333333,
 Privilege Escalation,T1068,Exploitation for Privilege Escalation,Covered,dddddddd-4444-4444-4444-444444444444,spoolsv.exe child process
 Credential Access,T1003.001,Comsvcs MiniDump,Covered,eeeeeeee-5555-5555-5555-555555555555,CommandLine pattern
 Execution,T1047,Windows Management Instrumentation,Covered,ffffffff-6666-6666-6666-666666666666,WmiPrvSE parent process
+Defense Evasion,T1036.005,Match Legitimate Name or Location,Covered,10000001-0001-0001-0001-000000000001,From Hunt 001
+Execution,T1047,Windows Management Instrumentation Impacket,Covered,10000002-0002-0002-0002-000000000002,From Hunt 001
+Defense Evasion,T1564.002,Hide Artifacts via Shadow Copy,Covered,10000003-0003-0003-0003-000000000003,From Hunt 001
