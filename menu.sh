@@ -48,6 +48,25 @@ pause() {
   read -r _ || true
 }
 
+# Invalid selection handler - shows error, waits for user, then returns
+invalid() {
+  local bad="${1:-}"
+  echo ""
+  printf '%s' "$SPACES"
+  printf '%s%s✗  Invalid selection%s' "${BOLD}" "${RED}" "${NC}"
+  if [ -n "$bad" ]; then
+    printf ' %s"%s"%s' "${YELLOW}" "$bad" "${NC}"
+  fi
+  echo ""
+  printf '%s' "$SPACES"
+  printf '%s   Please enter a number between 0 and 12.%s
+' "${GREY}" "${NC}"
+  echo ""
+  printf '%s' "$SPACES"
+  printf '%s↵ Press Enter to try again...%s' "${DIM}" "${NC}"
+  read -r _ || true
+}
+
 # Clear + reposition
 redraw() {
   clear
@@ -326,7 +345,7 @@ action_8() {
          ls -1 reports/exports/ 2>/dev/null
          pause ;;
       0|"") return ;;
-      *) echo "  Invalid"; sleep 1 ;;
+      *) invalid "$fmt" ;;
     esac
   done
 }
@@ -409,7 +428,7 @@ action_12() {
          echo "  ✓ all written to reports/exports/"; ls -1 reports/exports/ 2>/dev/null | grep presentation; pause ;;
       8) [ -f reports/exports/final_presentation.pptx ] && ask_open reports/exports/final_presentation.pptx; pause ;;
       0|"") return ;;
-      *) echo "  Invalid"; sleep 1 ;;
+      *) invalid "$fmt" ;;
     esac
   done
 }
@@ -441,6 +460,6 @@ while true; do
     12) action_12 ;;
     0|q|Q) clear; echo "Bye."; exit 0 ;;
     "?") clear; echo "Numbers 0-12. q=quit."; pause ;;
-    *) echo "  Invalid"; sleep 1 ;;
+    *) invalid "$choice" ;;
   esac
 done
