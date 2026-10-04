@@ -1,0 +1,1 @@
+(event.code:3 AND process.executable.caseless:*\\mshta.exe) AND (NOT (destination.ip:(127.* OR 10.* OR 192.168.* OR 172.16.* OR 172.17.* OR 172.18.* OR 172.19.* OR 172.2* OR 172.30.* OR 172.31.*)))

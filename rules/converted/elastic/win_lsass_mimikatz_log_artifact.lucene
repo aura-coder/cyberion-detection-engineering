@@ -1,0 +1,1 @@
+event.code:11 AND process.executable.caseless:*\\lsass.exe AND (file.path:(*mimilsa.log OR *mimikatz.log))

@@ -1,0 +1,30 @@
+title: Regsvr32 External Network Connection
+id: 10000005-0005-0005-0005-000000000005
+status: experimental
+description: Detects regsvr32.exe making external network connections, consistent with the Squiblydoo technique for executing remote SCT payloads.
+references:
+  - https://attack.mitre.org/techniques/T1218/010/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.t1218.010
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    EventID: 3
+    Image|endswith: '\regsvr32.exe'
+  filter_local:
+    DestinationIp|startswith:
+      - '127.'
+      - '10.'
+      - '192.168.'
+      - '172.16.'
+      - '172.2'
+      - '172.30.'
+      - '172.31.'
+  condition: selection and not filter_local
+falsepositives:
+  - Enterprise COM registration against remote shares (rare)
+level: high

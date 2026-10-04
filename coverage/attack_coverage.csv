@@ -18,3 +18,8 @@ Execution,T1047,Windows Management Instrumentation,Covered,ffffffff-6666-6666-66
 Defense Evasion,T1036.005,Match Legitimate Name or Location,Covered,10000001-0001-0001-0001-000000000001,From Hunt 001
 Execution,T1047,Windows Management Instrumentation Impacket,Covered,10000002-0002-0002-0002-000000000002,From Hunt 001
 Defense Evasion,T1564.002,Hide Artifacts via Shadow Copy,Covered,10000003-0003-0003-0003-000000000003,From Hunt 001
+Command and Control,T1071.001,Web Protocols,Covered,10000004-0004-0004-0004-000000000004,mshta external
+Defense Evasion,T1218.005,Mshta,Covered,10000004-0004-0004-0004-000000000004,From Hunt 002
+Defense Evasion,T1218.010,Regsvr32,Covered,10000005-0005-0005-0005-000000000005,From Hunt 002
+Command and Control,T1105,Ingress Tool Transfer via certutil,Covered,10000006-0006-0006-0006-000000000006,From Hunt 002
+Defense Evasion,T1055.002,Portable Executable Injection,Covered,10000007-0007-0007-0007-000000000007,Cobalt Strike artifact

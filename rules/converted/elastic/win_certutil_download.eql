@@ -1,0 +1,1 @@
+any where (event.code:"1" and process.executable.caseless:"*\\certutil.exe" and (process.command_line like~ ("*-urlcache*", "*-verifyctl*", "*-split*"))) and (not process.command_line:"*localhost*")

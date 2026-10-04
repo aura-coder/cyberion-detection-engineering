@@ -1,0 +1,30 @@
+title: Certutil Used to Download Remote File
+id: 10000006-0006-0006-0006-000000000006
+status: experimental
+description: Detects certutil.exe invoked with URL cache or verifyctl download flags, a common LOLBin download cradle.
+references:
+  - https://attack.mitre.org/techniques/T1105/
+  - https://attack.mitre.org/techniques/T1140/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.t1105
+  - attack.t1140
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    EventID: 1
+    Image|endswith: '\certutil.exe'
+    CommandLine|contains:
+      - '-urlcache'
+      - '-verifyctl'
+      - '-split'
+  filter_localhost:
+    CommandLine|contains: 'localhost'
+  condition: selection and not filter_localhost
+falsepositives:
+  - Administrative certificate operations
+  - Some legitimate enterprise scripts
+level: high

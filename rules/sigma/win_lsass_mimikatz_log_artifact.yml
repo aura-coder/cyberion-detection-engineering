@@ -1,0 +1,27 @@
+title: LSASS Writes Mimikatz Log Artifact
+id: 10000007-0007-0007-0007-000000000007
+status: experimental
+description: Detects lsass.exe creating a file matching mimikatz/cobalt-strike log naming patterns (mimilsa.log, mimi*.log), strong evidence of a beacon injected into the LSASS process.
+references:
+  - https://attack.mitre.org/techniques/T1003/001/
+  - https://attack.mitre.org/techniques/T1055.002/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.t1003.001
+  - attack.t1055.002
+logsource:
+  category: file_event
+  product: windows
+detection:
+  selection:
+    EventID: 11
+    Image|endswith: '\lsass.exe'
+    TargetFilename|endswith:
+      - 'mimilsa.log'
+      - 'mimikatz.log'
+  condition: selection
+falsepositives:
+  - Known-good mimikatz for authorized red-team activity
+  - Extremely rare legitimate use of these filenames
+level: critical

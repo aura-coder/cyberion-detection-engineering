@@ -1,0 +1,1 @@
+any where (event.code:"3" and process.executable.caseless:"*\\mshta.exe") and (not (destination.ip like~ ("127.*", "10.*", "192.168.*", "172.16.*", "172.17.*", "172.18.*", "172.19.*", "172.2*", "172.30.*", "172.31.*")))

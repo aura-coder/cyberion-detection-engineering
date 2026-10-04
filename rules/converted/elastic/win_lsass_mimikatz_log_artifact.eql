@@ -1,0 +1,1 @@
+any where event.code:"11" and process.executable.caseless:"*\\lsass.exe" and (file.path like~ ("*mimilsa.log", "*mimikatz.log"))

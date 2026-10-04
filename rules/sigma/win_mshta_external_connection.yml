@@ -1,0 +1,35 @@
+title: MSHTA External Network Connection
+id: 10000004-0004-0004-0004-000000000004
+status: experimental
+description: Detects mshta.exe making outbound network connections, indicative of HTA-based C2 or payload download.
+references:
+  - https://attack.mitre.org/techniques/T1218/005/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.t1218.005
+  - attack.t1071.001
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    EventID: 3
+    Image|endswith: '\mshta.exe'
+  filter_local:
+    DestinationIp|startswith:
+      - '127.'
+      - '10.'
+      - '192.168.'
+      - '172.16.'
+      - '172.17.'
+      - '172.18.'
+      - '172.19.'
+      - '172.2'
+      - '172.30.'
+      - '172.31.'
+  condition: selection and not filter_local
+falsepositives:
+  - Legitimate enterprise HTA applications calling home
+  - Software update packages using mshta
+level: high

@@ -1,0 +1,1 @@
+(event.code:1 AND process.executable.caseless:*\\certutil.exe AND (process.command_line:(*\-urlcache* OR *\-verifyctl* OR *\-split*))) AND (NOT process.command_line:*localhost*)
