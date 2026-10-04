@@ -5,171 +5,66 @@ set -uo pipefail
 cd "$(dirname "$0")"
 [ -d ".venv" ] && source .venv/bin/activate 2>/dev/null || true
 
-# ---------- Colors ----------
+# Colors
 BOLD=$'\033[1m'; DIM=$'\033[2m'; NC=$'\033[0m'
-BLUE=$'\033[38;5;33m'; SKY=$'\033[38;5;45m'; TEAL=$'\033[38;5;44m'
-GREEN=$'\033[38;5;41m'; YELLOW=$'\033[38;5;220m'; RED=$'\033[38;5;203m'
-ORANGE=$'\033[38;5;215m'; MAGENTA=$'\033[38;5;177m'
-GREY=$'\033[38;5;244m'; WHITE=$'\033[38;5;255m'
+BLUE=$'\033[38;5;33m'; SKY=$'\033[38;5;45m'
+GREEN=$'\033[38;5;41m'; YELLOW=$'\033[38;5;220m'
+RED=$'\033[38;5;203m'; ORANGE=$'\033[38;5;215m'
+MAGENTA=$'\033[38;5;177m'; GREY=$'\033[38;5;244m'
+WHITE=$'\033[38;5;255m'; TEAL=$'\033[38;5;44m'
 
-# ---------- Fixed content width ----------
-W=76
+# Fixed menu width
+W=78
 
-# ---------- Centering helper ----------
-# Reads lines from stdin, prints each with left padding
-center() {
-  local cols pad
+# Compute left indent for centering
+compute_indent() {
+  local cols
   cols=$(tput cols 2>/dev/null || echo 100)
-  pad=$(( (cols - W) / 2 ))
-  [ "$pad" -lt 0 ] && pad=0
-  local spaces
-  spaces=$(printf '%*s' "$pad" "")
-  while IFS= read -r line; do
-    printf '%s%s\n' "$spaces" "$line"
-  done
+  INDENT=$(( (cols - W) / 2 ))
+  [ "$INDENT" -lt 0 ] && INDENT=0
+  SPACES=$(printf '%*s' "$INDENT" "")
 }
 
-# ---------- Data ----------
-count_rules()        { ls rules/sigma/*.yml 2>/dev/null | wc -l | tr -d ' '; }
-count_correlations() { grep -l '^correlation:' rules/sigma/*.yml 2>/dev/null | wc -l | tr -d ' '; }
-count_hunts()        { ls hunts/*.md 2>/dev/null | grep -v template | wc -l | tr -d ' '; }
-count_incidents()    { ls incidents/*.md 2>/dev/null | grep -v template | wc -l | tr -d ' '; }
-count_playbooks()    { ls playbooks/*.md 2>/dev/null | grep -v template | wc -l | tr -d ' '; }
-count_coverage()     { tail -n +2 coverage/attack_coverage.csv 2>/dev/null | wc -l | tr -d ' '; }
-count_commits()      { git rev-list --count HEAD 2>/dev/null || echo 0; }
-count_converted()    { ls rules/converted/splunk/*.spl rules/converted/elastic/*.lucene rules/converted/elastic/*.eql 2>/dev/null | wc -l | tr -d ' '; }
-last_commit()        { git log -1 --format='%s' 2>/dev/null | cut -c1-48; }
-now_str()            { date '+%Y-%m-%d %H:%M:%S'; }
+# Print with indent prefix
+p() { printf '%s' "$SPACES"; printf '%s\n' "$*"; }
+pf() { printf '%s' "$SPACES"; printf "$@"; }
 
-# ---------- Frame builder (writes to stdout; caller pipes to center) ----------
-build_frame() {
-  local rules=$(count_rules) corr=$(count_correlations) hunts=$(count_hunts)
-  local incs=$(count_incidents) pb=$(count_playbooks) cov=$(count_coverage)
-  local commits=$(count_commits) conv=$(count_converted) last=$(last_commit)
+# Data collectors
+c_rules()        { ls rules/sigma/*.yml 2>/dev/null | wc -l | tr -d ' '; }
+c_correlations() { grep -l '^correlation:' rules/sigma/*.yml 2>/dev/null | wc -l | tr -d ' '; }
+c_hunts()        { ls hunts/*.md 2>/dev/null | grep -v template | wc -l | tr -d ' '; }
+c_incidents()    { ls incidents/*.md 2>/dev/null | grep -v template | wc -l | tr -d ' '; }
+c_playbooks()    { ls playbooks/*.md 2>/dev/null | grep -v template | wc -l | tr -d ' '; }
+c_coverage()     { tail -n +2 coverage/attack_coverage.csv 2>/dev/null | wc -l | tr -d ' '; }
+c_commits()      { git rev-list --count HEAD 2>/dev/null || echo 0; }
+c_converted()    { ls rules/converted/splunk/*.spl rules/converted/elastic/*.lucene rules/converted/elastic/*.eql 2>/dev/null | wc -l | tr -d ' '; }
+c_last()         { git log -1 --format='%s' 2>/dev/null | cut -c1-52; }
 
-  # Top banner
-  printf '%s%s%s\n' "${BLUE}" "$(printf '━%.0s' $(seq 1 $W))" "${NC}"
-  printf '  %s%sCYBERION DEFENSE LABS%s%*s%s●%s %sOPERATIONAL%s  %s│%s  %sv1.0.0%s\n' \
-    "${BOLD}" "${WHITE}" "${NC}" $((W - 64)) "" "${GREEN}" "${NC}" "${WHITE}" "${NC}" \
-    "${GREY}" "${NC}" "${GREY}" "${NC}"
-  printf '  %sDetection Engineering & Threat Hunting Console%s\n' "${GREY}" "${NC}"
-  printf '  %s%s%s\n' "${DIM}" "$(now_str)" "${NC}"
-  printf '%s%s%s\n' "${BLUE}" "$(printf '━%.0s' $(seq 1 $W))" "${NC}"
-  echo ""
-
-  # Status box
-  printf '  %s╭─%s%s SYSTEM STATUS %s%s%s╮%s\n' \
-    "${SKY}" "${BOLD}${WHITE}" "${NC}" "${SKY}" "$(printf '─%.0s' $(seq 1 57))" "${NC}" "${NC}"
-  printf '  %s│%s  %s%-22s%s %s%-6s%s    %s%-22s%s %s%-6s%s %s│%s\n' \
-    "${SKY}" "${NC}" "${GREY}" "Detection Rules" "${NC}" "${BOLD}${GREEN}" "$rules" "${NC}" \
-    "${GREY}" "Git Commits" "${NC}" "${BOLD}${SKY}" "$commits" "${NC}" "${SKY}" "${NC}"
-  printf '  %s│%s  %s%-22s%s %s%-6s%s    %s%-22s%s %s%-6s%s %s│%s\n' \
-    "${SKY}" "${NC}" "${GREY}" "Correlation Rules" "${NC}" "${BOLD}${MAGENTA}" "$corr" "${NC}" \
-    "${GREY}" "ATT&CK Rows" "${NC}" "${BOLD}${YELLOW}" "$cov" "${NC}" "${SKY}" "${NC}"
-  printf '  %s│%s  %s%-22s%s %s%-6s%s    %s%-22s%s %s%-6s%s %s│%s\n' \
-    "${SKY}" "${NC}" "${GREY}" "Threat Hunts" "${NC}" "${BOLD}${SKY}" "$hunts" "${NC}" \
-    "${GREY}" "Converted Queries" "${NC}" "${BOLD}${TEAL}" "$conv" "${NC}" "${SKY}" "${NC}"
-  printf '  %s│%s  %s%-22s%s %s%-6s%s    %s%-22s%s %s%-6s%s %s│%s\n' \
-    "${SKY}" "${NC}" "${GREY}" "Incident Reports" "${NC}" "${BOLD}${ORANGE}" "$incs" "${NC}" \
-    "${GREY}" "IR Playbooks" "${NC}" "${BOLD}${SKY}" "$pb" "${NC}" "${SKY}" "${NC}"
-  printf '  %s╰─%s last commit: %s%s%s%s\n' "${SKY}" "${NC}" "${DIM}${GREY}" "$last" "${NC}" "${NC}"
-  echo ""
-
-  # Menu sections
-  printf '  %s%sVALIDATION & TESTING%s\n' "${BOLD}" "${BLUE}" "${NC}"
-  echo ""
-  printf '    %s%s[1]%s  %sValidate Sigma rules%s%*ssigma check%s\n' \
-    "${BOLD}" "${SKY}" "${NC}" "${WHITE}" "${NC}" $((W - 36)) "" "${GREY}" "${NC}"
-  printf '    %s%s[2]%s  %sRun full test suite%s%*s26 checks%s\n' \
-    "${BOLD}" "${SKY}" "${NC}" "${WHITE}" "${NC}" $((W - 36)) "" "${GREY}" "${NC}"
-  printf '    %s%s[3]%s  %sRule effectiveness%s%*smatched vs 34,870 events%s\n' \
-    "${BOLD}" "${SKY}" "${NC}" "${WHITE}" "${NC}" $((W - 36)) "" "${GREY}" "${NC}"
-  echo ""
-
-  printf '  %s%sCOVERAGE & ANALYSIS%s\n' "${BOLD}" "${BLUE}" "${NC}"
-  echo ""
-  printf '    %s%s[4]%s  %sATT&CK coverage matrix%s%*s40 techniques%s\n' \
-    "${BOLD}" "${SKY}" "${NC}" "${WHITE}" "${NC}" $((W - 36)) "" "${GREY}" "${NC}"
-  printf '    %s%s[5]%s  %sRebuild Navigator layer%s%*svisual heatmap%s\n' \
-    "${BOLD}" "${SKY}" "${NC}" "${WHITE}" "${NC}" $((W - 36)) "" "${GREY}" "${NC}"
-  echo ""
-
-  printf '  %s%sREPORTS%s\n' "${BOLD}" "${BLUE}" "${NC}"
-  echo ""
-  printf '    %s%s[6]%s  %sThreat hunt reports%s%*s2 confirmed hunts%s\n' \
-    "${BOLD}" "${SKY}" "${NC}" "${WHITE}" "${NC}" $((W - 36)) "" "${GREY}" "${NC}"
-  printf '    %s%s[7]%s  %sIncident case reports%s%*s2 true positives%s\n' \
-    "${BOLD}" "${SKY}" "${NC}" "${WHITE}" "${NC}" $((W - 36)) "" "${GREY}" "${NC}"
-  printf '    %s%s[8]%s  %sExecutive summary%s%*sMD / PDF / HTML / DOCX%s\n' \
-    "${BOLD}" "${SKY}" "${NC}" "${WHITE}" "${NC}" $((W - 36)) "" "${GREY}" "${NC}"
-  echo ""
-
-  printf '  %s%sOPERATIONS%s\n' "${BOLD}" "${BLUE}" "${NC}"
-  echo ""
-  printf '    %s%s[9]%s   %sConvert to Splunk/Lucene/EQL%s%*s108 query files%s\n' \
-    "${BOLD}" "${SKY}" "${NC}" "${WHITE}" "${NC}" $((W - 37)) "" "${GREY}" "${NC}"
-  printf '    %s%s[10]%s  %sGit history%s%*scommit log%s\n' \
-    "${BOLD}" "${SKY}" "${NC}" "${WHITE}" "${NC}" $((W - 36)) "" "${GREY}" "${NC}"
-  printf '    %s%s[11]%s  %sProject statistics%s%*sproject snapshot%s\n' \
-    "${BOLD}" "${SKY}" "${NC}" "${WHITE}" "${NC}" $((W - 36)) "" "${GREY}" "${NC}"
-  printf '    %s%s[12]%s  %sPresentation%s%*sPPTX / PDF / HTML / DOCX%s\n' \
-    "${BOLD}" "${SKY}" "${NC}" "${WHITE}" "${NC}" $((W - 36)) "" "${GREY}" "${NC}"
-  echo ""
-
-  printf '  %s%sSESSION%s\n' "${BOLD}" "${BLUE}" "${NC}"
-  echo ""
-  printf '    %s%s[0]%s   %sExit%s%*squit console%s\n' \
-    "${BOLD}" "${SKY}" "${NC}" "${WHITE}" "${NC}" $((W - 36)) "" "${GREY}" "${NC}"
-  echo ""
-
-  # Footer
-  printf '%s%s%s\n' "${GREY}" "$(printf '─%.0s' $(seq 1 $W))" "${NC}"
-  printf '  %sENTER%s number   %s│%s   %sq%s quit   %s│%s   %s?%s help%s\n' \
-    "${BOLD}${WHITE}" "${NC}" "${GREY}" "${NC}" "${BOLD}${WHITE}" "${NC}" \
-    "${GREY}" "${NC}" "${BOLD}${WHITE}" "${NC}" "${NC}"
-  printf '%s%s%s\n' "${GREY}" "$(printf '─%.0s' $(seq 1 $W))" "${NC}"
-}
-
-# ---------- Draw the screen ----------
-draw() {
-  clear
-  build_frame | center
-}
-
-# ---------- Pause ----------
+# Pause
 pause() {
   echo ""
-  printf '  %s↵ Press Enter to return to menu%s' "${DIM}" "${NC}"
-  read -r _ || return
+  printf '%s' "$SPACES"
+  printf '%s↵ Press Enter to return to menu%s' "${DIM}" "${NC}"
+  read -r _ || true
 }
 
-# ---------- Sub-menu header (centered) ----------
-sub_header() {
+# Clear + reposition
+redraw() {
   clear
-  {
-    printf '%s%s%s\n' "${BLUE}" "$(printf '━%.0s' $(seq 1 $W))" "${NC}"
-    printf '  %s%s%s%s\n' "${BOLD}${WHITE}" "$1" "${NC}" "${NC}"
-    printf '%s%s%s\n' "${BLUE}" "$(printf '━%.0s' $(seq 1 $W))" "${NC}"
-    echo ""
-  } | center
+  compute_indent
 }
 
-sub_footer() {
-  echo ""
-  printf '  %sChoose:%s ' "${BOLD}" "${NC}"
-}
-
-# ---------- Open file ----------
+# Open file helper
 open_file() {
   local f="$1"
   [ -f "$f" ] || { echo "File not found: $f"; return 1; }
-  local ext="${f##*.}" opener=""
+  local ext="${f##*.}"
+  local opener="less"
   case "$ext" in
-    md|txt|log|json|yml|yaml) opener="${PAGER:-less}" ;;
-    pdf)    command -v xdg-open >/dev/null 2>&1 && opener="xdg-open" || opener="firefox" ;;
-    html|htm) command -v firefox >/dev/null 2>&1 && opener="firefox" || opener="xdg-open" ;;
-    docx|doc|pptx|ppt|xlsx|xls|odt|ods) command -v libreoffice >/dev/null 2>&1 && opener="libreoffice --norestore" || opener="xdg-open" ;;
-    *) opener="xdg-open" ;;
+    pdf)    opener="xdg-open" ;;
+    html|htm) opener="firefox" ;;
+    docx|doc|pptx|ppt|xlsx|xls|odt|ods) opener="libreoffice --norestore" ;;
+    *) opener="${PAGER:-less}" ;;
   esac
   $opener "$f" &
 }
@@ -177,9 +72,119 @@ open_file() {
 ask_open() {
   local f="$1"; [ -f "$f" ] || return 1
   echo ""
-  printf '  Open the file now? [y/N]: '
+  printf '%s' "$SPACES"
+  printf 'Open the file now? [y/N]: '
   read -r ans || return
   case "$ans" in y|Y|yes|YES) open_file "$f" ;; esac
+}
+
+# ============================================================
+# DRAW MAIN MENU
+# ============================================================
+draw_main() {
+  redraw
+
+  local rules=$(c_rules) corr=$(c_correlations) hunts=$(c_hunts) incs=$(c_incidents)
+  local pb=$(c_playbooks) cov=$(c_coverage) commits=$(c_commits)
+  local conv=$(c_converted) last=$(c_last)
+
+  # Top line
+  pf '%s%s%s\n' "${BLUE}" "$(printf '━%.0s' $(seq 1 $W))" "${NC}"
+
+  # Brand row
+  pf '  %s%sCYBERION DEFENSE LABS%s' "${BOLD}" "${WHITE}" "${NC}"
+  # pad to right side: brand is ~22 visible, need to pad to W-30
+  printf '%*s' $((W - 50)) ""
+  pf '%s●%s %sOPERATIONAL%s  %s│%s  %sv1.0.0%s\n' \
+    "${GREEN}" "${NC}" "${WHITE}" "${NC}" "${GREY}" "${NC}" "${GREY}" "${NC}"
+
+  pf '  %sDetection Engineering & Threat Hunting Console%s\n' "${GREY}" "${NC}"
+  pf '  %s%s%s\n' "${DIM}" "$(date '+%Y-%m-%d %H:%M:%S')" "${NC}"
+  pf '%s%s%s\n' "${BLUE}" "$(printf '━%.0s' $(seq 1 $W))" "${NC}"
+  echo ""
+
+  # Status box
+  pf '  %s╭─%s%s SYSTEM STATUS %s' "${SKY}" "${BOLD}${WHITE}" "${NC}" "${SKY}"
+  printf '%s' "$(printf '─%.0s' $(seq 1 56))"
+  pf '%s╮%s\n' "${SKY}" "${NC}"
+
+  _row() {
+    local l1="$1" v1="$2" c1="$3" l2="$4" v2="$5" c2="$6"
+    pf '  %s│%s  ' "${SKY}" "${NC}"
+    printf '%s%-22s%s' "${GREY}" "$l1" "${NC}"
+    printf '%s%-5s%s' "${BOLD}${c1}" "$v1" "${NC}"
+    printf '  %s%-22s%s' "${GREY}" "$l2" "${NC}"
+    printf '%s%-5s%s' "${BOLD}${c2}" "$v2" "${NC}"
+    pf '  %s│%s\n' "${SKY}" "${NC}"
+  }
+  _row "Detection Rules" "$rules" "${GREEN}" "Git Commits" "$commits" "${SKY}"
+  _row "Correlation Rules" "$corr" "${MAGENTA}" "ATT&CK Rows" "$cov" "${YELLOW}"
+  _row "Threat Hunts" "$hunts" "${SKY}" "Converted Queries" "$conv" "${TEAL}"
+  _row "Incident Reports" "$incs" "${ORANGE}" "IR Playbooks" "$pb" "${SKY}"
+
+  pf '  %s╰─%s last commit: %s%s%s\n' "${SKY}" "${NC}" "${DIM}${GREY}" "$last" "${NC}"
+  echo ""
+
+  # Menu items — each printed as: label padded to fixed width, then description
+  # Total inner width = W - 4 (2 left indent + 2 right)
+  local label_w=48   # width reserved for "[N]  Label"
+
+  _mi() {
+    local key="$1" label="$2" desc="$3"
+    local left="    [$key]  $label"
+    local left_vis=${#left}
+    local pad=$((label_w - left_vis))
+    [ "$pad" -lt 0 ] && pad=0
+    pf '%s%s%s' "${WHITE}" "$left" "${NC}"
+    printf '%*s' "$pad" ""
+    pf '%s%s%s\n' "${GREY}" "$desc" "${NC}"
+  }
+
+  _sec() { echo ""; pf '  %s%s%s\n' "${BOLD}" "${BLUE}" "$1"; echo ""; }
+  _sec ""    # spacer only
+
+  pf '  %s%sVALIDATION & TESTING%s\n' "${BOLD}" "${BLUE}" "${NC}"
+  echo ""
+  _mi "1"  "Validate Sigma rules"      "sigma check"
+  _mi "2"  "Run full test suite"       "26 checks"
+  _mi "3"  "Rule effectiveness"        "matched vs 34,870 events"
+  echo ""
+
+  pf '  %s%sCOVERAGE & ANALYSIS%s\n' "${BOLD}" "${BLUE}" "${NC}"
+  echo ""
+  _mi "4"  "ATT&CK coverage matrix"    "40 techniques"
+  _mi "5"  "Rebuild Navigator layer"   "visual heatmap"
+  echo ""
+
+  pf '  %s%sREPORTS%s\n' "${BOLD}" "${BLUE}" "${NC}"
+  echo ""
+  _mi "6"  "Threat hunt reports"       "2 confirmed hunts"
+  _mi "7"  "Incident case reports"     "2 true positives"
+  _mi "8"  "Executive summary"         "MD / PDF / HTML / DOCX"
+  echo ""
+
+  pf '  %s%sOPERATIONS%s\n' "${BOLD}" "${BLUE}" "${NC}"
+  echo ""
+  _mi "9"  "Convert to Splunk/Lucene/EQL" "108 query files"
+  _mi "10" "Git history"               "commit log"
+  _mi "11" "Project statistics"        "project snapshot"
+  _mi "12" "Presentation"              "PPTX / PDF / HTML / DOCX"
+  echo ""
+
+  pf '  %s%sSESSION%s\n' "${BOLD}" "${BLUE}" "${NC}"
+  echo ""
+  _mi "0"  "Exit"                      "quit console"
+  echo ""
+
+  # Footer
+  pf '%s%s%s\n' "${GREY}" "$(printf '─%.0s' $(seq 1 $W))" "${NC}"
+  pf '  %sENTER%s number  %s│%s  %sq%s quit  %s│%s  %s?%s help\n' \
+    "${BOLD}${WHITE}" "${NC}" "${GREY}" "${NC}" \
+    "${BOLD}${WHITE}" "${NC}" "${GREY}" "${NC}" \
+    "${BOLD}${WHITE}" "${NC}"
+  pf '%s%s%s\n' "${GREY}" "$(printf '─%.0s' $(seq 1 $W))" "${NC}"
+  echo ""
+  pf '  %s%s❯%s Enter selection %s[0-12]%s: ' "${BOLD}" "${SKY}" "${NC}" "${GREY}" "${NC}"
 }
 
 # ============================================================
@@ -187,47 +192,38 @@ ask_open() {
 # ============================================================
 
 action_1() {
-  echo ""
-  echo "  ${BOLD}${WHITE}Sigma Rule Validation${NC}"
-  echo ""
+  echo ""; pf '  %s%sSigma Rule Validation%s\n\n' "${BOLD}" "${WHITE}" "${NC}"
   sigma check rules/sigma
   pause
 }
 
 action_2() {
-  echo ""
-  echo "  ${BOLD}${WHITE}Full Test Suite${NC}"
-  echo ""
+  echo ""; pf '  %s%sFull Test Suite%s\n\n' "${BOLD}" "${WHITE}" "${NC}"
   ./tests/run_all_tests.sh
   pause
 }
 
 action_3() {
-  echo ""
-  echo "  ${BOLD}${WHITE}Rule Effectiveness — 34,870 real events${NC}"
-  echo ""
+  echo ""; pf '  %s%sRule Effectiveness — 34,870 real events%s\n\n' "${BOLD}" "${WHITE}" "${NC}"
   python3 - <<'PY'
 import json
 from pathlib import Path
-G="\033[38;5;41m"; R="\033[38;5;203m"; B="\033[1m"; NC="\033[0m"
+G="\033[38;5;41m"; R="\033[38;5;203m"; B="\033[1m"; NC="\033[0m"; D="\033[2m"
 d = json.loads(Path("tests/results/effectiveness.json").read_text())
-matched = sum(1 for v in d.values() if v > 0)
-total = len(d)
-print(f"  {'Rule':<52s} {'Matches':>8s}")
-print(f"  {'─'*62}")
+matched = sum(1 for v in d.values() if v > 0); total = len(d)
+print(f"  {'Rule':<54s} {'Matches':>8s}")
+print(f"  {'─'*64}")
 for k, v in d.items():
     badge = f"{G}● {v:>3d}{NC}" if v > 0 else f"{R}●   0{NC}"
-    print(f"  {k[:52]:<52s} {badge}")
-print(f"  {'─'*62}")
+    print(f"  {k[:54]:<54s} {badge}")
+print(f"  {'─'*64}")
 print(f"  {B}Success: {G}{matched}/{total}{NC} ({matched/total*100:.0f}%)")
 PY
   pause
 }
 
 action_4() {
-  echo ""
-  echo "  ${BOLD}${WHITE}ATT&CK Coverage Matrix${NC}"
-  echo ""
+  echo ""; pf '  %s%sATT&CK Coverage Matrix%s\n\n' "${BOLD}" "${WHITE}" "${NC}"
   python3 - <<'PY'
 import csv
 G="\033[38;5;41m"; Y="\033[38;5;220m"; R="\033[38;5;203m"; B="\033[1m"; NC="\033[0m"
@@ -248,29 +244,25 @@ PY
 }
 
 action_5() {
-  echo ""
-  echo "  ${BOLD}${WHITE}Rebuild ATT&CK Navigator Layer${NC}"
-  echo ""
+  echo ""; pf '  %s%sRebuild ATT&CK Navigator Layer%s\n\n' "${BOLD}" "${WHITE}" "${NC}"
   python scripts/csv_to_navigator.py
   echo ""
-  echo "  ${GREEN}✓${NC} coverage/attack_coverage_layer.json"
-  echo ""
-  echo "  ${BOLD}View heatmap:${NC}"
-  echo "   1. Open https://mitre-attack.github.io/attack-navigator/"
-  echo "   2. Open Existing Layer → Upload from local"
-  echo "   3. Select $(pwd)/coverage/attack_coverage_layer.json"
+  pf '  %s✓%s coverage/attack_coverage_layer.json\n\n' "${GREEN}" "${NC}"
+  pf '  %sView heatmap:%s\n' "${BOLD}" "${NC}"
+  pf '    1. Open https://mitre-attack.github.io/attack-navigator/\n'
+  pf '    2. Open Existing Layer → Upload from local\n'
+  pf '    3. Select %s/coverage/attack_coverage_layer.json\n' "$(pwd)"
   pause
 }
 
 action_6() {
   while true; do
-    sub_header "Threat Hunt Reports"
-    {
-      echo "    [1]  Hunt 001 — Suspicious Process Chains"
-      echo "    [2]  Hunt 002 — C2 Beaconing Candidates"
-      echo "    [3]  Back to main menu"
-    } | center
-    sub_footer
+    redraw
+    pf '  %s%sThreat Hunt Reports%s\n\n' "${BOLD}" "${WHITE}" "${NC}"
+    pf '    [1]  Hunt 001 — Suspicious Process Chains\n'
+    pf '    [2]  Hunt 002 — C2 Beaconing Candidates\n'
+    pf '    [3]  Back\n\n'
+    pf '  %sChoose:%s ' "${BOLD}" "${NC}"
     read -r sub || return
     case "$sub" in
       1) less hunts/hunt_001_suspicious_process_chains.md ;;
@@ -282,13 +274,12 @@ action_6() {
 
 action_7() {
   while true; do
-    sub_header "Incident Case Reports"
-    {
-      echo "    [1]  Incident 001 — LSASS Dump + Cobalt Strike"
-      echo "    [2]  Incident 002 — Masqueraded Office Dropper"
-      echo "    [3]  Back to main menu"
-    } | center
-    sub_footer
+    redraw
+    pf '  %s%sIncident Case Reports%s\n\n' "${BOLD}" "${WHITE}" "${NC}"
+    pf '    [1]  Incident 001 — LSASS Dump + Cobalt Strike\n'
+    pf '    [2]  Incident 002 — Masqueraded Office Dropper\n'
+    pf '    [3]  Back\n\n'
+    pf '  %sChoose:%s ' "${BOLD}" "${NC}"
     read -r sub || return
     case "$sub" in
       1) less incidents/incident_001_lsass_dump_and_cobalt_strike.md ;;
@@ -300,44 +291,38 @@ action_7() {
 
 action_8() {
   while true; do
-    sub_header "Executive Summary — Export"
-    {
-      echo "    [1]  View on screen"
-      echo "    [2]  Export Markdown       .md"
-      echo "    [3]  Export PDF            .pdf"
-      echo "    [4]  Export HTML           .html"
-      echo "    [5]  Export Word           .docx"
-      echo "    [6]  Export PowerPoint     .pptx"
-      echo "    [7]  Export ALL formats"
-      echo "    [0]  Back"
-    } | center
-    sub_footer
+    redraw
+    pf '  %s%sExecutive Summary — Export%s\n\n' "${BOLD}" "${WHITE}" "${NC}"
+    pf '    [1]  View on screen\n'
+    pf '    [2]  Export Markdown       .md\n'
+    pf '    [3]  Export PDF            .pdf\n'
+    pf '    [4]  Export HTML           .html\n'
+    pf '    [5]  Export Word           .docx\n'
+    pf '    [6]  Export PowerPoint     .pptx\n'
+    pf '    [7]  Export ALL formats\n'
+    pf '    [0]  Back\n\n'
+    pf '  %sChoose:%s ' "${BOLD}" "${NC}"
     read -r fmt || return
     mkdir -p reports/exports
-    local out=""
     case "$fmt" in
       1) less reports/executive_summary.md ;;
-      2) out="reports/exports/executive_summary.md"; cp reports/executive_summary.md "$out"
-         echo "  ✓ $out"; ask_open "$out"; pause ;;
-      3) out="reports/exports/executive_summary.pdf"
-         pandoc reports/executive_summary.md -o "$out" --pdf-engine=weasyprint 2>/dev/null && \
-           { echo "  ✓ $out"; ask_open "$out"; } || echo "  PDF engine unavailable"
+      2) cp reports/executive_summary.md reports/exports/executive_summary.md
+         echo "  ✓ reports/exports/executive_summary.md"; ask_open reports/exports/executive_summary.md; pause ;;
+      3) pandoc reports/executive_summary.md -o reports/exports/executive_summary.pdf --pdf-engine=weasyprint 2>/dev/null && \
+           { echo "  ✓ reports/exports/executive_summary.pdf"; ask_open reports/exports/executive_summary.pdf; } || echo "  PDF engine unavailable"
          pause ;;
-      4) out="reports/exports/executive_summary.html"
-         pandoc reports/executive_summary.md -o "$out" --standalone 2>/dev/null
-         echo "  ✓ $out"; ask_open "$out"; pause ;;
-      5) out="reports/exports/executive_summary.docx"
-         pandoc reports/executive_summary.md -o "$out" 2>/dev/null
-         echo "  ✓ $out"; ask_open "$out"; pause ;;
-      6) out="reports/exports/final_presentation.pptx"
-         pandoc reports/final_presentation.md -o "$out" 2>/dev/null
-         echo "  ✓ $out"; ask_open "$out"; pause ;;
+      4) pandoc reports/executive_summary.md -o reports/exports/executive_summary.html --standalone 2>/dev/null
+         echo "  ✓ reports/exports/executive_summary.html"; ask_open reports/exports/executive_summary.html; pause ;;
+      5) pandoc reports/executive_summary.md -o reports/exports/executive_summary.docx 2>/dev/null
+         echo "  ✓ reports/exports/executive_summary.docx"; ask_open reports/exports/executive_summary.docx; pause ;;
+      6) pandoc reports/final_presentation.md -o reports/exports/final_presentation.pptx 2>/dev/null
+         echo "  ✓ reports/exports/final_presentation.pptx"; ask_open reports/exports/final_presentation.pptx; pause ;;
       7) cp reports/executive_summary.md reports/exports/executive_summary.md
          pandoc reports/executive_summary.md -o reports/exports/executive_summary.html --standalone 2>/dev/null
          pandoc reports/executive_summary.md -o reports/exports/executive_summary.docx 2>/dev/null
          pandoc reports/executive_summary.md -o reports/exports/executive_summary.pdf --pdf-engine=weasyprint 2>/dev/null
          pandoc reports/final_presentation.md -o reports/exports/final_presentation.pptx 2>/dev/null
-         echo "  ✓ all exports written to reports/exports/"
+         echo "  ✓ all written to reports/exports/"
          ls -1 reports/exports/ 2>/dev/null
          pause ;;
       0|"") return ;;
@@ -347,9 +332,7 @@ action_8() {
 }
 
 action_9() {
-  echo ""
-  echo "  ${BOLD}${WHITE}Converting Rules to Backend Queries${NC}"
-  echo ""
+  echo ""; pf '  %s%sConverting Rules to Backend Queries%s\n\n' "${BOLD}" "${WHITE}" "${NC}"
   mkdir -p rules/converted/splunk rules/converted/elastic
   local n=0 total=$(ls rules/sigma/*.yml 2>/dev/null | wc -l | tr -d ' ')
   for f in rules/sigma/*.yml; do
@@ -357,90 +340,74 @@ action_9() {
     sigma convert -t splunk --without-pipeline "$f" > "rules/converted/splunk/${base}.spl" 2>/dev/null || true
     sigma convert -t lucene -p ecs_windows "$f" > "rules/converted/elastic/${base}.lucene" 2>/dev/null || true
     sigma convert -t eql -p ecs_windows "$f" > "rules/converted/elastic/${base}.eql" 2>/dev/null || true
-    n=$((n+1))
-    printf '\r  Converting %d/%d...' "$n" "$total"
+    n=$((n+1)); printf '\r  Converting %d/%d...' "$n" "$total"
   done
-  printf '\r  ✓ Converted %d rules           \n' "$total"
-  echo ""
-  echo "    Splunk:  $(ls rules/converted/splunk/*.spl 2>/dev/null | wc -l) files"
-  echo "    Lucene:  $(ls rules/converted/elastic/*.lucene 2>/dev/null | wc -l) files"
-  echo "    EQL:     $(ls rules/converted/elastic/*.eql 2>/dev/null | wc -l) files"
+  printf '\r  ✓ Converted %d rules           \n\n' "$total"
+  pf '    Splunk:  %s files\n' "$(ls rules/converted/splunk/*.spl 2>/dev/null | wc -l)"
+  pf '    Lucene:  %s files\n' "$(ls rules/converted/elastic/*.lucene 2>/dev/null | wc -l)"
+  pf '    EQL:     %s files\n' "$(ls rules/converted/elastic/*.eql 2>/dev/null | wc -l)"
   pause
 }
 
 action_10() {
-  echo ""
-  echo "  ${BOLD}${WHITE}Git History${NC}"
-  echo ""
+  echo ""; pf '  %s%sGit History%s\n\n' "${BOLD}" "${WHITE}" "${NC}"
   git log --oneline --decorate --color=always | head -30
   echo ""
-  echo "  Total commits: $(git rev-list --count HEAD)"
+  pf '  Total commits: %s\n' "$(git rev-list --count HEAD)"
   pause
 }
 
 action_11() {
-  echo ""
-  echo "  ${BOLD}${WHITE}Project Statistics${NC}"
-  echo ""
-  printf '  %-28s %s\n' "Sigma detection rules"   "$(count_rules)"
-  printf '  %-28s %s\n' "Correlation rules"       "$(count_correlations)"
-  printf '  %-28s %s\n' "Base rules"              "$(ls rules/sigma/base_*.yml 2>/dev/null | wc -l)"
-  printf '  %-28s %s\n' "Converted queries"       "$(count_converted)"
-  printf '  %-28s %s\n' "ATT&CK coverage rows"    "$(count_coverage)"
-  printf '  %-28s %s\n' "Threat hunts"            "$(count_hunts)"
-  printf '  %-28s %s\n' "Incident reports"        "$(count_incidents)"
-  printf '  %-28s %s\n' "IR playbooks"            "$(count_playbooks)"
-  printf '  %-28s %s\n' "Git-tracked files"       "$(git ls-files | wc -l)"
-  printf '  %-28s %s\n' "Git commits"             "$(count_commits)"
+  echo ""; pf '  %s%sProject Statistics%s\n\n' "${BOLD}" "${WHITE}" "${NC}"
+  pf '  %-28s %s\n' "Sigma detection rules"   "$(c_rules)"
+  pf '  %-28s %s\n' "Correlation rules"       "$(c_correlations)"
+  pf '  %-28s %s\n' "Base rules"              "$(ls rules/sigma/base_*.yml 2>/dev/null | wc -l)"
+  pf '  %-28s %s\n' "Converted queries"       "$(c_converted)"
+  pf '  %-28s %s\n' "ATT&CK coverage rows"    "$(c_coverage)"
+  pf '  %-28s %s\n' "Threat hunts"            "$(c_hunts)"
+  pf '  %-28s %s\n' "Incident reports"        "$(c_incidents)"
+  pf '  %-28s %s\n' "IR playbooks"            "$(c_playbooks)"
+  pf '  %-28s %s\n' "Git-tracked files"       "$(git ls-files | wc -l)"
+  pf '  %-28s %s\n' "Git commits"             "$(c_commits)"
   pause
 }
 
 action_12() {
   while true; do
-    sub_header "Presentation — Export"
-    {
-      echo "    [1]  View slide outline"
-      echo "    [2]  Export PowerPoint     .pptx"
-      echo "    [3]  Export PDF            .pdf"
-      echo "    [4]  Export HTML           .html"
-      echo "    [5]  Export Word           .docx"
-      echo "    [6]  Export Markdown       .md"
-      echo "    [7]  Export ALL formats"
-      echo "    [8]  Open existing PPTX"
-      echo "    [0]  Back"
-    } | center
-    sub_footer
+    redraw
+    pf '  %s%sPresentation — Export%s\n\n' "${BOLD}" "${WHITE}" "${NC}"
+    pf '    [1]  View slide outline\n'
+    pf '    [2]  Export PowerPoint     .pptx\n'
+    pf '    [3]  Export PDF            .pdf\n'
+    pf '    [4]  Export HTML           .html\n'
+    pf '    [5]  Export Word           .docx\n'
+    pf '    [6]  Export Markdown       .md\n'
+    pf '    [7]  Export ALL formats\n'
+    pf '    [8]  Open existing PPTX\n'
+    pf '    [0]  Back\n\n'
+    pf '  %sChoose:%s ' "${BOLD}" "${NC}"
     read -r fmt || return
     mkdir -p reports/exports
-    local out=""
     case "$fmt" in
       1) less reports/final_presentation.md ;;
-      2) out="reports/exports/final_presentation.pptx"
-         pandoc reports/final_presentation.md -o "$out" 2>/dev/null
-         echo "  ✓ $out"; ask_open "$out"; pause ;;
-      3) out="reports/exports/final_presentation.pdf"
-         pandoc reports/final_presentation.md -o "$out" --pdf-engine=weasyprint 2>/dev/null && \
-           { echo "  ✓ $out"; ask_open "$out"; } || echo "  PDF engine unavailable"
+      2) pandoc reports/final_presentation.md -o reports/exports/final_presentation.pptx 2>/dev/null
+         echo "  ✓ reports/exports/final_presentation.pptx"; ask_open reports/exports/final_presentation.pptx; pause ;;
+      3) pandoc reports/final_presentation.md -o reports/exports/final_presentation.pdf --pdf-engine=weasyprint 2>/dev/null && \
+           { echo "  ✓ reports/exports/final_presentation.pdf"; ask_open reports/exports/final_presentation.pdf; } || echo "  PDF engine unavailable"
          pause ;;
-      4) out="reports/exports/final_presentation.html"
-         pandoc reports/final_presentation.md -o "$out" --standalone 2>/dev/null
-         echo "  ✓ $out"; ask_open "$out"; pause ;;
-      5) out="reports/exports/final_presentation.docx"
-         pandoc reports/final_presentation.md -o "$out" 2>/dev/null
-         echo "  ✓ $out"; ask_open "$out"; pause ;;
-      6) out="reports/exports/final_presentation.md"
-         cp reports/final_presentation.md "$out"
-         echo "  ✓ $out"; ask_open "$out"; pause ;;
+      4) pandoc reports/final_presentation.md -o reports/exports/final_presentation.html --standalone 2>/dev/null
+         echo "  ✓ reports/exports/final_presentation.html"; ask_open reports/exports/final_presentation.html; pause ;;
+      5) pandoc reports/final_presentation.md -o reports/exports/final_presentation.docx 2>/dev/null
+         echo "  ✓ reports/exports/final_presentation.docx"; ask_open reports/exports/final_presentation.docx; pause ;;
+      6) cp reports/final_presentation.md reports/exports/final_presentation.md
+         echo "  ✓ reports/exports/final_presentation.md"; ask_open reports/exports/final_presentation.md; pause ;;
       7) cp reports/final_presentation.md reports/exports/final_presentation.md
          pandoc reports/final_presentation.md -o reports/exports/final_presentation.html --standalone 2>/dev/null
          pandoc reports/final_presentation.md -o reports/exports/final_presentation.docx 2>/dev/null
          pandoc reports/final_presentation.md -o reports/exports/final_presentation.pptx 2>/dev/null
          pandoc reports/final_presentation.md -o reports/exports/final_presentation.pdf --pdf-engine=weasyprint 2>/dev/null
-         echo "  ✓ all exports written to reports/exports/"
-         ls -1 reports/exports/ 2>/dev/null | grep presentation
-         pause ;;
-      8) [ -f reports/exports/final_presentation.pptx ] && ask_open reports/exports/final_presentation.pptx
-         pause ;;
+         echo "  ✓ all written to reports/exports/"; ls -1 reports/exports/ 2>/dev/null | grep presentation; pause ;;
+      8) [ -f reports/exports/final_presentation.pptx ] && ask_open reports/exports/final_presentation.pptx; pause ;;
       0|"") return ;;
       *) echo "  Invalid"; sleep 1 ;;
     esac
@@ -450,24 +417,13 @@ action_12() {
 # ============================================================
 # MAIN LOOP
 # ============================================================
-
 trap 'echo ""; exit 130' INT
 
 while true; do
-  draw
-
-  # Center the prompt too
-  cols=$(tput cols 2>/dev/null || echo 100)
-  pad=$(( (cols - W) / 2 ))
-  [ "$pad" -lt 0 ] && pad=0
-  sp=$(printf '%*s' "$pad" "")
-
-  printf '%s  %s❯%s Enter selection %s[0-12]%s: ' \
-    "$sp" "${BOLD}${SKY}" "${NC}" "${GREY}" "${NC}"
+  draw_main
 
   if ! IFS= read -r choice; then
-    echo ""
-    exit 0
+    echo ""; exit 0
   fi
 
   case "$choice" in
