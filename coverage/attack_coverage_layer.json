@@ -151,7 +151,7 @@
     {
       "techniqueID": "T1110",
       "color": "#ffff00",
-      "comment": "Partially Covered: win_failed_logon_burst_then_success.yml Correlation rule detects burst then success; single-source lockout alerts not covered"
+      "comment": "Partially Covered: correlation_win_failed_logon_burst_then_success.yml Correlation rule detects burst then success; single-source lockout alerts not covered"
     },
     {
       "techniqueID": "T1087",
@@ -192,6 +192,21 @@
       "techniqueID": "T1021.001",
       "color": "#ffff00",
       "comment": "Partially Covered: win_winrm_session_created.yml WinRM covered; RDP session events not analysed"
+    },
+    {
+      "techniqueID": "T1110",
+      "color": "#00ff00",
+      "comment": "Covered: correlation_win_failed_logon_burst_then_success.yml Correlation rule (temporal, 5 min, grouped by TargetUserName)"
+    },
+    {
+      "techniqueID": "T1071",
+      "color": "#00ff00",
+      "comment": "Covered: correlation_win_download_then_external_callback.yml Correlation rule (temporal, 2 min)"
+    },
+    {
+      "techniqueID": "T1059.001",
+      "color": "#00ff00",
+      "comment": "Covered: correlation_win_encoded_powershell_then_external.yml Correlation rule (temporal, 2 min)"
     }
   ],
   "gradient": {

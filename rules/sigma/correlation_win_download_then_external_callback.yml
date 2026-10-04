@@ -1,0 +1,22 @@
+title: Correlation - Download Then External Callback
+id: 30000006-0006-0006-0006-000000000006
+status: experimental
+description: Correlation. An executable written into a Downloads folder followed closely by an outbound network connection, consistent with download-and-execute + C2 callback chain.
+references:
+  - https://attack.mitre.org/techniques/T1105/
+  - https://attack.mitre.org/techniques/T1071/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.t1105
+  - attack.t1071
+correlation:
+  type: temporal
+  rules:
+    - base_win_file_created_in_downloads
+    - base_win_network_connection_event
+  timespan: 2m
+falsepositives:
+  - Legitimate software updaters that download into Downloads and immediately phone home
+  - Browser extensions with automatic update
+level: high

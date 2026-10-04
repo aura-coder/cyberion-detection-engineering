@@ -18,7 +18,7 @@ Why each Sigma rule is assigned a particular level value. PRD 8 requires levels 
 - win_comsvcs_minidump.yml (T1003.001) - no routine legitimate use
 - win_lsass_mimikatz_log_artifact.yml (T1055.002) - cryptographic proof of Cobalt Strike
 
-### High (15 rules)
+### High (15 rules, 3 of which are correlation rules)
 - win_security_audit_log_cleared.yml (T1070)
 - win_office_masquerade_appdata.yml (T1036.005)
 - win_wmi_impacket_redirect.yml (T1047/T1021.006)
@@ -31,9 +31,9 @@ Why each Sigma rule is assigned a particular level value. PRD 8 requires levels 
 - win_regsvr32_external_connection.yml (T1218.010)
 - win_certutil_download.yml (T1105)
 - win_ping_delay_and_hidden_delete.yml (T1070.004)
-- win_failed_logon_burst_then_success.yml (T1110/T1078)
-- win_download_then_external_callback.yml (T1105/T1071)
-- win_encoded_powershell_then_external.yml (T1059.001/T1071)
+- correlation_win_failed_logon_burst_then_success.yml (T1110/T1078)
+- correlation_win_download_then_external_callback.yml (T1105/T1071)
+- correlation_win_encoded_powershell_then_external.yml (T1059.001/T1071)
 
 ### Medium (7 rules)
 - win_security_scheduled_task_created.yml (T1053.005)

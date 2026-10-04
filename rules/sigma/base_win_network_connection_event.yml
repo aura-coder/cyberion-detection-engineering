@@ -1,0 +1,14 @@
+title: Base - Windows Network Connection Event
+id: 30000005-0005-0005-0005-000000000005
+status: test
+name: base_win_network_connection_event
+description: Base selection for correlation - Sysmon EID 3 network connection.
+author: Cyberion Detection Engineering
+date: 2026/04/04
+logsource:
+  product: windows
+detection:
+  selection:
+    EventID: 3
+  condition: selection
+level: informational

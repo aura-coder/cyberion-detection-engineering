@@ -27,7 +27,7 @@ Defense Evasion,T1070.004,Indicator Removal File Deletion,Covered,10000008-0008-
 Defense Evasion,T1564.001,Hide Artifacts via Hidden Files,Covered,10000008-0008-0008-0008-000000000008,From Incident 002
 Defense Evasion,T1036.005,Masquerading in AppData Roaming,Covered,10000009-0009-0009-0009-000000000009,From Incident 002
 Execution,T1059.003,Windows Command Shell,Partially Covered,win_ping_delay_and_hidden_delete.yml,Only cmd.exe with anti-sandbox pattern; generic shell execution not covered
-Credential Access,T1110,Brute Force,Partially Covered,win_failed_logon_burst_then_success.yml,Correlation rule detects burst then success; single-source lockout alerts not covered
+Credential Access,T1110,Brute Force,Partially Covered,correlation_win_failed_logon_burst_then_success.yml,Correlation rule detects burst then success; single-source lockout alerts not covered
 Discovery,T1087,Account Discovery,Not Covered,,No rule for net user / whoami enumeration patterns
 Discovery,T1082,System Information Discovery,Not Covered,,No rule for systeminfo / hostname reconnaissance
 Discovery,T1018,Remote System Discovery,Not Covered,,No rule for net view / ping sweeps
@@ -36,3 +36,6 @@ Exfiltration,T1041,Exfiltration Over C2 Channel,Not Covered,,No rule for anomalo
 Impact,T1486,Data Encrypted for Impact,Not Covered,,No rule for mass file encryption or ransom note creation
 Initial Access,T1566,Phishing,Partially Covered,win_office_spawns_powershell.yml,Detects Office spawning shells; no email gateway telemetry in corpus
 Lateral Movement,T1021.001,RDP,Partially Covered,win_winrm_session_created.yml,WinRM covered; RDP session events not analysed
+Credential Access,T1110,Brute Force,Covered,correlation_win_failed_logon_burst_then_success.yml,"Correlation rule (temporal, 5 min, grouped by TargetUserName)"
+Command and Control,T1071,Application Layer Protocol,Covered,correlation_win_download_then_external_callback.yml,"Correlation rule (temporal, 2 min)"
+Execution,T1059.001,PowerShell Encoded + C2 Correlation,Covered,correlation_win_encoded_powershell_then_external.yml,"Correlation rule (temporal, 2 min)"

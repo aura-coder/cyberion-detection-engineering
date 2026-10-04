@@ -1,0 +1,1 @@
+event.code:11 AND file.path:*\\Downloads\\* AND (file.path:(*.exe OR *.dll OR *.scr))

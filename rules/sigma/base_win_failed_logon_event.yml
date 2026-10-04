@@ -1,0 +1,15 @@
+title: Base - Windows Failed Logon Event
+id: 30000001-0001-0001-0001-000000000001
+status: test
+name: base_win_failed_logon_event
+description: Base selection for correlation - Windows Security failed logon (4625).
+author: Cyberion Detection Engineering
+date: 2026/04/04
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4625
+  condition: selection
+level: informational

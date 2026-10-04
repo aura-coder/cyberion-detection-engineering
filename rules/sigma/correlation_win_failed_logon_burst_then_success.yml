@@ -1,0 +1,24 @@
+title: Correlation - Failed Logon Burst Then Success
+id: 30000003-0003-0003-0003-000000000003
+status: experimental
+description: Correlation. Multiple failed logons for the same account followed by a successful logon within 5 minutes. Indicates brute force leading to credential compromise.
+references:
+  - https://attack.mitre.org/techniques/T1110/
+  - https://attack.mitre.org/techniques/T1078/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.t1110
+  - attack.t1078
+correlation:
+  type: temporal
+  rules:
+    - base_win_failed_logon_event
+    - base_win_successful_logon_event
+  group-by:
+    - TargetUserName
+  timespan: 5m
+falsepositives:
+  - User mistyping password several times before succeeding
+  - Legitimate service account retry after transient failure
+level: high

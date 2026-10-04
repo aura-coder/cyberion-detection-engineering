@@ -1,0 +1,15 @@
+title: Base - PowerShell Network Connection
+id: 30000008-0008-0008-0008-000000000008
+status: test
+name: base_win_powershell_network_connection
+description: Base selection for correlation - PowerShell making an outbound network connection.
+author: Cyberion Detection Engineering
+date: 2026/04/04
+logsource:
+  product: windows
+detection:
+  selection:
+    EventID: 3
+    Image|endswith: '\\powershell.exe'
+  condition: selection
+level: informational

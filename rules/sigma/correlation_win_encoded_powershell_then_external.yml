@@ -1,0 +1,22 @@
+title: Correlation - Encoded PowerShell Then External Connection
+id: 30000009-0009-0009-0009-000000000009
+status: experimental
+description: Correlation. Encoded PowerShell execution followed by an outbound network connection from the same image within a short window. Indicates a download cradle or C2 stager.
+references:
+  - https://attack.mitre.org/techniques/T1059/001/
+  - https://attack.mitre.org/techniques/T1071/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.t1059.001
+  - attack.t1071
+correlation:
+  type: temporal
+  rules:
+    - base_win_encoded_powershell_execution
+    - base_win_powershell_network_connection
+  timespan: 2m
+falsepositives:
+  - Legitimate admin scripts that call home after execution
+  - Software management frameworks
+level: high
