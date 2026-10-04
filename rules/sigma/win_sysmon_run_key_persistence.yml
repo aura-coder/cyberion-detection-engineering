@@ -7,7 +7,6 @@ references:
 author: Cyberion Detection Engineering
 date: 2026/04/04
 tags:
-  - attack.persistence
   - attack.t1547.001
 logsource:
   category: registry_set

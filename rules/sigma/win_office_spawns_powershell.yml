@@ -8,7 +8,6 @@ references:
 author: Cyberion Detection Engineering
 date: 2026/04/04
 tags:
-  - attack.execution
   - attack.t1204.002
 logsource:
   category: process_creation

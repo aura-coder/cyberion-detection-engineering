@@ -7,8 +7,6 @@ references:
 author: Cyberion Detection Engineering
 date: 2026/04/04
 tags:
-  - attack.persistence
-  - attack.privilege-escalation
   - attack.t1543.003
 logsource:
   product: windows

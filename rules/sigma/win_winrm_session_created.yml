@@ -7,7 +7,6 @@ references:
 author: Cyberion Detection Engineering
 date: 2026/04/04
 tags:
-  - attack.lateral_movement
   - attack.t1021.006
 logsource:
   product: windows

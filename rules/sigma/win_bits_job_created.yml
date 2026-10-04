@@ -7,8 +7,6 @@ references:
 author: Cyberion Detection Engineering
 date: 2026/04/04
 tags:
-  - attack.defense_evasion
-  - attack.persistence
   - attack.t1197
 logsource:
   product: windows
