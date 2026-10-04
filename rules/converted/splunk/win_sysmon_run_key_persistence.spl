@@ -1,0 +1,1 @@
+EventID=13 TargetObject IN ("*\\CurrentVersion\\Run\\*", "*\\CurrentVersion\\RunOnce\\*", "*\\CurrentVersion\\RunServices\\*", "*\\CurrentVersion\\RunServicesOnce\\*")

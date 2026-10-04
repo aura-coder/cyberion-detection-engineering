@@ -1,0 +1,1 @@
+any where event.code:"1" and (process.parent.executable.caseless like~ ("*\\WINWORD.EXE", "*\\EXCEL.EXE", "*\\POWERPNT.EXE", "*\\OUTLOOK.EXE")) and (process.executable.caseless like~ ("*\\powershell.exe", "*\\cmd.exe", "*\\wscript.exe", "*\\cscript.exe", "*\\mshta.exe"))

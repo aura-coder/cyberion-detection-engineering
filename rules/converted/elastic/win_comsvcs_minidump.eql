@@ -1,0 +1,1 @@
+any where event.code:"1" and (process.command_line:"*comsvcs*" and process.command_line:"*MiniDump*")

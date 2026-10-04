@@ -1,0 +1,25 @@
+title: Credential Dump via Comsvcs MiniDump
+id: eeeeeeee-5555-5555-5555-555555555555
+status: experimental
+description: Detects abuse of comsvcs.dll MiniDump export to dump LSASS process memory, a known credential access technique.
+references:
+  - https://attack.mitre.org/techniques/T1003/001/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.credential_access
+  - attack.t1003.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    EventID: 1
+    CommandLine|contains|all:
+      - 'comsvcs'
+      - 'MiniDump'
+  condition: selection
+falsepositives:
+  - Legitimate diagnostic memory dump utilities
+  - Some software troubleshooting tools
+level: critical

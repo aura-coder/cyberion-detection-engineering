@@ -1,0 +1,24 @@
+title: WMI Process Creation
+id: ffffffff-6666-6666-6666-666666666666
+status: experimental
+description: Detects process creation via WMI, commonly used for lateral movement and remote execution.
+references:
+  - https://attack.mitre.org/techniques/T1047/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.execution
+  - attack.t1047
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    EventID: 1
+    ParentImage|endswith: '\WmiPrvSE.exe'
+  condition: selection
+falsepositives:
+  - Legitimate system management tools
+  - SCCM and monitoring agents
+  - Software inventory collection
+level: medium

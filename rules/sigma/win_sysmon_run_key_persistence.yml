@@ -1,0 +1,27 @@
+title: Registry Run Key Persistence
+id: 88888888-8888-8888-8888-888888888888
+status: experimental
+description: Detects modification of Run/RunOnce registry keys used for persistence at user logon.
+references:
+  - https://attack.mitre.org/techniques/T1547/001/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.persistence
+  - attack.t1547.001
+logsource:
+  category: registry_set
+  product: windows
+detection:
+  selection:
+    EventID: 13
+    TargetObject|contains:
+      - '\CurrentVersion\Run\'
+      - '\CurrentVersion\RunOnce\'
+      - '\CurrentVersion\RunServices\'
+      - '\CurrentVersion\RunServicesOnce\'
+  condition: selection
+falsepositives:
+  - Legitimate software adding itself to startup
+  - OneDrive, Teams, Slack, and similar apps
+level: medium

@@ -1,0 +1,1 @@
+any where event.code:"1" and process.parent.executable.caseless:"*\\spoolsv.exe" and (process.executable.caseless like~ ("*\\cmd.exe", "*\\powershell.exe", "*\\wscript.exe", "*\\cscript.exe", "*\\rundll32.exe"))

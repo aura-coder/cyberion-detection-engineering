@@ -1,0 +1,34 @@
+title: Office Application Spawns PowerShell
+id: cccccccc-3333-3333-3333-333333333333
+status: experimental
+description: Detects an Office application spawning PowerShell, a common pattern in malicious macro-based phishing.
+references:
+  - https://attack.mitre.org/techniques/T1566/001/
+  - https://attack.mitre.org/techniques/T1204/002/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.execution
+  - attack.t1204.002
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    EventID: 1
+    ParentImage|endswith:
+      - '\WINWORD.EXE'
+      - '\EXCEL.EXE'
+      - '\POWERPNT.EXE'
+      - '\OUTLOOK.EXE'
+    Image|endswith:
+      - '\powershell.exe'
+      - '\cmd.exe'
+      - '\wscript.exe'
+      - '\cscript.exe'
+      - '\mshta.exe'
+  condition: selection
+falsepositives:
+  - Legitimate macros that invoke scripts
+  - Document automation workflows
+level: high

@@ -1,0 +1,1 @@
+EventID=1 ParentImage="*\\spoolsv.exe" Image IN ("*\\cmd.exe", "*\\powershell.exe", "*\\wscript.exe", "*\\cscript.exe", "*\\rundll32.exe")

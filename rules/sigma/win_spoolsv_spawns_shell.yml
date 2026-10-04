@@ -1,0 +1,29 @@
+title: Spoolsv Spawns Shell Process
+id: dddddddd-4444-4444-4444-444444444444
+status: experimental
+description: Detects the print spooler service (spoolsv.exe) spawning a shell or script interpreter, a strong indicator of print spooler exploitation or abuse.
+references:
+  - https://attack.mitre.org/techniques/T1068/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.privilege_escalation
+  - attack.t1068
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    EventID: 1
+    ParentImage|endswith: '\spoolsv.exe'
+    Image|endswith:
+      - '\cmd.exe'
+      - '\powershell.exe'
+      - '\wscript.exe'
+      - '\cscript.exe'
+      - '\rundll32.exe'
+  condition: selection
+falsepositives:
+  - Print driver installation scripts
+  - Vendor printing software
+level: high

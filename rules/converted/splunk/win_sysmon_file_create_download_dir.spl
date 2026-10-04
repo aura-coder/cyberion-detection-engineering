@@ -1,0 +1,1 @@
+EventID=11 TargetFilename="*\\Downloads\\*" TargetFilename IN ("*.exe", "*.dll", "*.scr", "*.ps1", "*.bat", "*.vbs")

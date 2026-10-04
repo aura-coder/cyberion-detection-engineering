@@ -1,0 +1,22 @@
+title: WinRM Remote Management Session Created
+id: aaaaaaaa-1111-1111-1111-111111111111
+status: experimental
+description: Detects creation of a WinRM/WSMan session, used for lateral movement.
+references:
+  - https://attack.mitre.org/techniques/T1021/006/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.lateral_movement
+  - attack.t1021.006
+logsource:
+  product: windows
+  service: winrm
+detection:
+  selection:
+    EventID: 6
+  condition: selection
+falsepositives:
+  - Legitimate administrative PowerShell remoting
+  - Configuration management tools using WinRM
+level: medium

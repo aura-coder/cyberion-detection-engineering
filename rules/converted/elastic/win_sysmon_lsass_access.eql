@@ -1,0 +1,1 @@
+any where (event.code:"10" and winlog.event_data.TargetImage:"*\\lsass.exe") and (not (process.executable.caseless like~ ("*\\svchost.exe", "*\\MsMpEng.exe", "*\\csrss.exe", "*\\wininit.exe", "*\\services.exe")))

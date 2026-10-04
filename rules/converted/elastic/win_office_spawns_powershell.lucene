@@ -1,0 +1,1 @@
+event.code:1 AND (process.parent.executable.caseless:(*\\WINWORD.EXE OR *\\EXCEL.EXE OR *\\POWERPNT.EXE OR *\\OUTLOOK.EXE)) AND (process.executable.caseless:(*\\powershell.exe OR *\\cmd.exe OR *\\wscript.exe OR *\\cscript.exe OR *\\mshta.exe))

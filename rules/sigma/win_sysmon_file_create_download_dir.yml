@@ -1,0 +1,30 @@
+title: Executable Created in User Download Directory
+id: 77777777-7777-7777-7777-777777777777
+status: experimental
+description: Detects creation of executable files in user download directories, a common pattern for ingress tool transfer.
+references:
+  - https://attack.mitre.org/techniques/T1105/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.command_and_control
+  - attack.t1105
+logsource:
+  category: file_event
+  product: windows
+detection:
+  selection:
+    EventID: 11
+    TargetFilename|contains: '\Downloads\'
+    TargetFilename|endswith:
+      - '.exe'
+      - '.dll'
+      - '.scr'
+      - '.ps1'
+      - '.bat'
+      - '.vbs'
+  condition: selection
+falsepositives:
+  - Users legitimately downloading installers and portable apps
+  - Software updates saved to Downloads by browsers
+level: medium

@@ -1,0 +1,1 @@
+any where event.code:"13" and (registry.path like~ ("*\\CurrentVersion\\Run\\*", "*\\CurrentVersion\\RunOnce\\*", "*\\CurrentVersion\\RunServices\\*", "*\\CurrentVersion\\RunServicesOnce\\*"))

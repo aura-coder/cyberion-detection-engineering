@@ -1,0 +1,31 @@
+title: Suspicious Process Access to LSASS
+id: 66666666-6666-6666-6666-666666666666
+status: experimental
+description: Detects process access to lsass.exe via Sysmon event 10, a strong indicator of credential dumping activity.
+references:
+  - https://attack.mitre.org/techniques/T1003/001/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.credential_access
+  - attack.t1003.001
+logsource:
+  category: process_access
+  product: windows
+detection:
+  selection:
+    EventID: 10
+    TargetImage|endswith: '\lsass.exe'
+  filter_known:
+    SourceImage|endswith:
+      - '\svchost.exe'
+      - '\MsMpEng.exe'
+      - '\csrss.exe'
+      - '\wininit.exe'
+      - '\services.exe'
+  condition: selection and not filter_known
+falsepositives:
+  - Endpoint protection software scanning LSASS
+  - Backup agents reading LSASS memory
+  - Windows Defender
+level: high

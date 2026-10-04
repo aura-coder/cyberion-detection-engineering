@@ -1,0 +1,1 @@
+event.code:13 AND (registry.path:(*\\CurrentVersion\\Run\\* OR *\\CurrentVersion\\RunOnce\\* OR *\\CurrentVersion\\RunServices\\* OR *\\CurrentVersion\\RunServicesOnce\\*))

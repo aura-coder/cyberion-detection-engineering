@@ -1,0 +1,26 @@
+title: CreateRemoteThread Remote Process Injection
+id: 99999999-9999-9999-9999-999999999999
+status: experimental
+description: Detects CreateRemoteThread calls targeting another process, a hallmark of process injection.
+references:
+  - https://attack.mitre.org/techniques/T1055/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.defense_evasion
+  - attack.privilege_escalation
+  - attack.t1055
+logsource:
+  category: create_remote_thread
+  product: windows
+detection:
+  selection:
+    EventID: 8
+  filter_self:
+    SourceImage|endswith: '\svchost.exe'
+    TargetImage|endswith: '\svchost.exe'
+  condition: selection and not filter_self
+falsepositives:
+  - Debuggers and development tools
+  - Some EDR agents and injectors
+level: high

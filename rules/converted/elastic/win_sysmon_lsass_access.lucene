@@ -1,0 +1,1 @@
+(event.code:10 AND winlog.event_data.TargetImage:*\\lsass.exe) AND (NOT (process.executable.caseless:(*\\svchost.exe OR *\\MsMpEng.exe OR *\\csrss.exe OR *\\wininit.exe OR *\\services.exe)))
