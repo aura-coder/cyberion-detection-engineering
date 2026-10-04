@@ -32,18 +32,18 @@ Across the four-week engagement, we built a **documented, MITRE ATT&CK-mapped de
 
 | Gap | Why it matters | New rule added |
 |-----|----------------|----------------|
-| No detection for Office binaries running outside Program Files | Macro droppers masquerade as Office from user directories | `win_office_masquerade_appdata.yml` |
-| No detection for WMI + SMB redirects | Impacket wmiexec goes undetected | `win_wmi_impacket_redirect.yml` |
-| No detection for shadow-copy execution | Stealth binaries can hide in shadow copies | `win_shadow_copy_execution.yml` |
+| No detection for Office binaries running outside Program Files | Macro droppers masquerade as Office from user directories | win_office_masquerade_appdata.yml |
+| No detection for WMI + SMB redirects | Impacket wmiexec goes undetected | win_wmi_impacket_redirect.yml |
+| No detection for shadow-copy execution | Stealth binaries can hide in shadow copies | win_shadow_copy_execution.yml |
 | No detection for LOLBin external traffic | mshta/regsvr32/certutil C2 goes undetected | 3 rules added |
-| No detection for LSASS file artifacts | Post-exploitation mimikatz logging slips through | `win_lsass_mimikatz_log_artifact.yml` |
+| No detection for LSASS file artifacts | Post-exploitation mimikatz logging slips through | win_lsass_mimikatz_log_artifact.yml |
 
 ## Recommendations
 
 ### Immediate (Week 5)
 1. **Treat Case 001 as a live incident**, not a lab exercise: rotate any real credentials that match the pattern observed.
-2. Deploy the 22 Sigma rules via the SIEM pipeline (converted artifacts in `rules/converted/`).
-3. Subscribe to threat intel for the IPs and domains in `iocs/ioc_research_notes.md`.
+2. Deploy the 22 Sigma rules via the SIEM pipeline (converted artifacts in rules/converted/).
+3. Subscribe to threat intel for the IPs and domains in iocs/ioc_research_notes.md.
 
 ### Short-term (Month 2)
 1. Extend coverage to cloud log sources (Azure AD, AWS CloudTrail) — currently only Windows event logs are covered.
