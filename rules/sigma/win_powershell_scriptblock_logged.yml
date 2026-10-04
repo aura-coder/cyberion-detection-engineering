@@ -1,0 +1,24 @@
+title: PowerShell Script Block Logged
+id: 55555555-5555-5555-5555-555555555555
+status: experimental
+description: Detects PowerShell script block logging (event 4104). Useful for content-based detection of malicious scripts even when obfuscation is applied at the invocation layer.
+references:
+  - https://attack.mitre.org/techniques/T1059/001/
+  - https://attack.mitre.org/techniques/T1027/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.execution
+  - attack.t1059.001
+logsource:
+  product: windows
+  service: powershell
+detection:
+  selection:
+    EventID: 4104
+  condition: selection
+falsepositives:
+  - Legitimate administrative scripts
+  - Software management frameworks invoking PowerShell
+  - Logon scripts
+level: low

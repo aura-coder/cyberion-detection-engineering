@@ -1,0 +1,1 @@
+any where (winlog.channel like~ ("Microsoft-Windows-PowerShell/Operational", "PowerShellCore/Operational")) and event.code:"4104"

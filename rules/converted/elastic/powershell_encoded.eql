@@ -1,1 +1,0 @@
-any where EventID:1 and Image:"*\\powershell.exe" and (CommandLine like~ ("*-EncodedCommand*", "*-enc *", "*-e *"))

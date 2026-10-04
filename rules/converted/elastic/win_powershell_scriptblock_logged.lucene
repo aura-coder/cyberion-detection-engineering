@@ -1,0 +1,1 @@
+(winlog.channel:(Microsoft\-Windows\-PowerShell\/Operational OR PowerShellCore\/Operational)) AND event.code:4104

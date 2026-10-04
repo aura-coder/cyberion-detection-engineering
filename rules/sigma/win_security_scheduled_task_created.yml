@@ -1,0 +1,23 @@
+title: Windows Scheduled Task Created
+id: 33333333-3333-3333-3333-333333333333
+status: experimental
+description: Detects creation of a scheduled task via Security event 4698, commonly used for persistence and delayed execution.
+references:
+  - https://attack.mitre.org/techniques/T1053/005/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.persistence
+  - attack.t1053.005
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4698
+  condition: selection
+falsepositives:
+  - Legitimate software installers creating scheduled tasks
+  - Administrators scheduling maintenance jobs
+  - Operating system update mechanisms
+level: medium

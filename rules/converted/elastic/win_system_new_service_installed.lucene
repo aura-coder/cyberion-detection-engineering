@@ -1,0 +1,1 @@
+winlog.channel:System AND event.code:7045

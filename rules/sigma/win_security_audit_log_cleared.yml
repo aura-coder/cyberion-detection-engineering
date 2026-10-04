@@ -1,0 +1,23 @@
+title: Windows Security Audit Log Cleared
+id: 22222222-2222-2222-2222-222222222222
+status: experimental
+description: Detects clearing of the Windows Security event log, a common defense evasion technique used to remove evidence of intrusion activity.
+references:
+  - https://attack.mitre.org/techniques/T1070/001/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.defense-evasion
+  - attack.t1070.001
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 1102
+  condition: selection
+falsepositives:
+  - Authorized log rotation by a privileged admin
+  - Backup or maintenance scripts that clear the audit log
+  - Monitoring systems with excessive records
+level: high

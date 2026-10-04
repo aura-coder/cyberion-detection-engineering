@@ -11,12 +11,32 @@
     {
       "techniqueID": "T1059.001",
       "color": "#00ff00",
-      "comment": "Covered: 11111111-1111-1111-1111-111111111111 Tested against Mordor JSON"
+      "comment": "Covered: 11111111-1111-1111-1111-111111111111 Encoded command execution"
     },
     {
       "techniqueID": "T1027",
       "color": "#00ff00",
       "comment": "Covered: 11111111-1111-1111-1111-111111111111 Encoded command obfuscation"
+    },
+    {
+      "techniqueID": "T1070.001",
+      "color": "#00ff00",
+      "comment": "Covered: 22222222-2222-2222-2222-222222222222 Security event 1102"
+    },
+    {
+      "techniqueID": "T1053.005",
+      "color": "#00ff00",
+      "comment": "Covered: 33333333-3333-3333-3333-333333333333 Security event 4698"
+    },
+    {
+      "techniqueID": "T1543.003",
+      "color": "#00ff00",
+      "comment": "Covered: 44444444-4444-4444-4444-444444444444 SCM event 7045"
+    },
+    {
+      "techniqueID": "T1059.001",
+      "color": "#00ff00",
+      "comment": "Covered: 55555555-5555-5555-5555-555555555555 PowerShell event 4104"
     }
   ],
   "gradient": {

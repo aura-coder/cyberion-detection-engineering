@@ -1,0 +1,24 @@
+title: New Windows Service Installed
+id: 44444444-4444-4444-4444-444444444444
+status: experimental
+description: Detects installation of a new Windows service via Service Control Manager event 7045, a common persistence and privilege escalation technique.
+references:
+  - https://attack.mitre.org/techniques/T1543/003/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.persistence
+  - attack.privilege-escalation
+  - attack.t1543.003
+logsource:
+  product: windows
+  service: system
+detection:
+  selection:
+    EventID: 7045
+  condition: selection
+falsepositives:
+  - Legitimate software installation
+  - Driver installations
+  - Antivirus or endpoint agent updates
+level: medium
