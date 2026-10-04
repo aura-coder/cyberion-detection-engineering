@@ -100,9 +100,27 @@ PY
 }
 
 action_4() {
-  echo "${BOLD}==> ATT&CK Coverage Matrix (from coverage/attack_coverage.csv)${NC}"
+  echo "${BOLD}==> ATT&CK Coverage Matrix${NC}"
   echo ""
-  column -t -s',' coverage/attack_coverage.csv 2>/dev/null || cat coverage/attack_coverage.csv
+  python3 - <<'PY'
+import csv
+from pathlib import Path
+
+rows = list(csv.DictReader(open("coverage/attack_coverage.csv")))
+covered = sum(1 for r in rows if r["Status"] == "Covered")
+partial = sum(1 for r in rows if "Partially" in r["Status"])
+notcov = sum(1 for r in rows if r["Status"] == "Not Covered")
+
+print(f"Total techniques assessed: {len(rows)}")
+print(f"  Covered:           {covered}")
+print(f"  Partially Covered: {partial}")
+print(f"  Not Covered:       {notcov}")
+print()
+print(f"{'Tactic':<22s} {'Technique':<12s} {'Name':<42s} {'Status':<18s}")
+print("-" * 96)
+for r in rows:
+    print(f"{r['Tactic']:<22s} {r['Technique ID']:<12s} {r['Technique Name'][:40]:<42s} {r['Status']:<18s}")
+PY
   pause
 }
 
