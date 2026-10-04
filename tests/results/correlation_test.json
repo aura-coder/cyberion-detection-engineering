@@ -1,0 +1,5 @@
+{
+  "corr1_failed_logon_burst_then_success": [],
+  "corr2_download_then_external": [],
+  "corr3_powershell_then_external": []
+}
