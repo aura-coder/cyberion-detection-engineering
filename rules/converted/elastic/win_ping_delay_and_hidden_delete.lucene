@@ -1,0 +1,1 @@
+event.code:1 AND (process.command_line:*ping\ 127.0.0.1* AND process.command_line:*del\ * AND process.command_line:*\/A\:H*)

@@ -1,0 +1,27 @@
+title: Ping Loopback Sleep Then Delete Hidden File
+id: 10000008-0008-0008-0008-000000000008
+status: experimental
+description: Detects the classic malware anti-sandbox pattern of pinging loopback as a sleep substitute followed by forced deletion of a hidden file, commonly observed in macro droppers and loaders.
+references:
+  - https://attack.mitre.org/techniques/T1070/004/
+  - https://attack.mitre.org/techniques/T1564/001/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.t1070.004
+  - attack.t1564.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    EventID: 1
+    CommandLine|contains|all:
+      - 'ping 127.0.0.1'
+      - 'del '
+      - '/A:H'
+  condition: selection
+falsepositives:
+  - Ad-hoc administrative cleanup scripts that combine ping and delete
+  - Very rare
+level: high

@@ -127,6 +127,21 @@
       "techniqueID": "T1055.002",
       "color": "#00ff00",
       "comment": "Covered: 10000007-0007-0007-0007-000000000007 Cobalt Strike artifact"
+    },
+    {
+      "techniqueID": "T1070.004",
+      "color": "#00ff00",
+      "comment": "Covered: 10000008-0008-0008-0008-000000000008 From Incident 002"
+    },
+    {
+      "techniqueID": "T1564.001",
+      "color": "#00ff00",
+      "comment": "Covered: 10000008-0008-0008-0008-000000000008 From Incident 002"
+    },
+    {
+      "techniqueID": "T1036.005",
+      "color": "#00ff00",
+      "comment": "Covered: 10000009-0009-0009-0009-000000000009 From Incident 002"
     }
   ],
   "gradient": {

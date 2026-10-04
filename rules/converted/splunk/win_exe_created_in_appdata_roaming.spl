@@ -1,0 +1,1 @@
+EventID=11 TargetFilename="*\\AppData\\Roaming\\*" TargetFilename IN ("*.exe", "*.dll", "*.scr") NOT (Image IN ("*\\OneDrive.exe", "*\\Teams.exe", "*\\slack.exe", "*\\Code.exe"))

@@ -1,0 +1,33 @@
+title: Executable Created in User Roaming AppData
+id: 10000009-0009-0009-0009-000000000009
+status: experimental
+description: Detects creation of an executable file in the user Roaming AppData directory, a common location for user-level persistence and loaders that do not require elevation.
+references:
+  - https://attack.mitre.org/techniques/T1036/005/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.t1036.005
+logsource:
+  category: file_event
+  product: windows
+detection:
+  selection:
+    EventID: 11
+    TargetFilename|contains: '\AppData\Roaming\'
+    TargetFilename|endswith:
+      - '.exe'
+      - '.dll'
+      - '.scr'
+  filter_known:
+    Image|endswith:
+      - '\OneDrive.exe'
+      - '\Teams.exe'
+      - '\slack.exe'
+      - '\Code.exe'
+  condition: selection and not filter_known
+falsepositives:
+  - Installers that self-update into Roaming
+  - Chrome, Edge, Slack, Teams, VS Code, and similar apps updating themselves
+  - Electron app auto-updaters
+level: medium

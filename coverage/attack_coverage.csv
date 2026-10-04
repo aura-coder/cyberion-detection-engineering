@@ -23,3 +23,6 @@ Defense Evasion,T1218.005,Mshta,Covered,10000004-0004-0004-0004-000000000004,Fro
 Defense Evasion,T1218.010,Regsvr32,Covered,10000005-0005-0005-0005-000000000005,From Hunt 002
 Command and Control,T1105,Ingress Tool Transfer via certutil,Covered,10000006-0006-0006-0006-000000000006,From Hunt 002
 Defense Evasion,T1055.002,Portable Executable Injection,Covered,10000007-0007-0007-0007-000000000007,Cobalt Strike artifact
+Defense Evasion,T1070.004,Indicator Removal File Deletion,Covered,10000008-0008-0008-0008-000000000008,From Incident 002
+Defense Evasion,T1564.001,Hide Artifacts via Hidden Files,Covered,10000008-0008-0008-0008-000000000008,From Incident 002
+Defense Evasion,T1036.005,Masquerading in AppData Roaming,Covered,10000009-0009-0009-0009-000000000009,From Incident 002

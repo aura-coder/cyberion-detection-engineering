@@ -1,0 +1,4 @@
+{"parent":"C:\\Users\\IEUser\\AppData\\Roaming\\WINWORD.exe","child":"C:\\Windows\\SysWOW64\\rundll32.exe","cmdline":"\"C:\\Windows\\System32\\rundll32.exe\"","time":"2020-10-17T11:43:36.306601Z"}
+{"parent":"C:\\Users\\IEUser\\AppData\\Roaming\\WINWORD.exe","child":"C:\\Windows\\SysWOW64\\explorer.exe","cmdline":"\"C:\\Windows\\System32\\explorer.exe\"","time":"2020-10-17T11:43:40.902894Z"}
+{"parent":"C:\\Users\\IEUser\\AppData\\Roaming\\WINWORD.exe","child":"C:\\Users\\IEUser\\AppData\\Roaming\\WINWORD.exe","cmdline":"\"C:\\Users\\IEUser\\AppData\\Roaming\\WINWORD.exe\"","time":"2020-10-17T11:43:45.120170Z"}
+{"parent":"C:\\Users\\IEUser\\AppData\\Roaming\\WINWORD.exe","child":"C:\\Windows\\SysWOW64\\cmd.exe","cmdline":"cmd /c ping 127.0.0.1&&del del /F /Q /A:H \"C:\\Users\\IEUser\\AppData\\Roaming\\wwlib.dll\"","time":"2020-10-17T11:43:49.229742Z"}

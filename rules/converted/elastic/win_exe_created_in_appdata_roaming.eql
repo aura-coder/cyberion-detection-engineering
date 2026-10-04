@@ -1,0 +1,1 @@
+any where (event.code:"11" and file.path:"*\\AppData\\Roaming\\*" and (file.path like~ ("*.exe", "*.dll", "*.scr"))) and (not (process.executable.caseless like~ ("*\\OneDrive.exe", "*\\Teams.exe", "*\\slack.exe", "*\\Code.exe")))
