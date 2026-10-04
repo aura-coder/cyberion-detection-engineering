@@ -169,9 +169,142 @@ action_7() {
 }
 
 action_8() {
-  echo "${BOLD}==> Executive summary${NC}"
-  echo ""
-  less reports/executive_summary.md
+  while true; do
+    clear
+    echo "${BOLD}${CYAN}============================================================${NC}"
+    echo "${BOLD}${CYAN}   EXECUTIVE SUMMARY - CHOOSE OUTPUT FORMAT${NC}"
+    echo "${BOLD}${CYAN}============================================================${NC}"
+    echo ""
+    echo "  Source file: reports/executive_summary.md"
+    echo "  Size: $(wc -l < reports/executive_summary.md) lines"
+    echo ""
+    echo "  ${BOLD}1)${NC}  View on screen                  ${DIM}(less, scroll with spacebar)${NC}"
+    echo "  ${BOLD}2)${NC}  Export as Markdown              ${DIM}(.md - plain text, best for git)${NC}"
+    echo "  ${BOLD}3)${NC}  Export as PDF                   ${DIM}(.pdf - printable, best for submission)${NC}"
+    echo "  ${BOLD}4)${NC}  Export as HTML                  ${DIM}(.html - opens in browser, printable)${NC}"
+    echo "  ${BOLD}5)${NC}  Export as Word document         ${DIM}(.docx - editable)${NC}"
+    echo "  ${BOLD}6)${NC}  Export as PowerPoint            ${DIM}(.pptx - slide deck)${NC}"
+    echo "  ${BOLD}7)${NC}  Export ALL formats              ${DIM}(everything above at once)${NC}"
+    echo ""
+    echo "  ${BOLD}0)${NC}  Back to main menu"
+    echo ""
+    read -rp "${BOLD}Choose [0-7]: ${NC}" fmt
+
+    mkdir -p reports/exports
+
+    case "$fmt" in
+      1)
+        less reports/executive_summary.md
+        ;;
+
+      2)
+        cp reports/executive_summary.md reports/exports/executive_summary.md
+        echo "${GREEN}Saved: reports/exports/executive_summary.md${NC}"
+        pause
+        ;;
+
+      3)
+        echo "${DIM}Generating PDF (using weasyprint)...${NC}"
+        if command -v pandoc >/dev/null 2>&1; then
+          if pandoc reports/executive_summary.md \
+                -o reports/exports/executive_summary.pdf \
+                --pdf-engine=weasyprint 2>/tmp/pdf_err.txt; then
+            echo "${GREEN}Saved: reports/exports/executive_summary.pdf${NC}"
+            ls -lh reports/exports/executive_summary.pdf
+          else
+            echo "${YELLOW}PDF engine (weasyprint) not available.${NC}"
+            echo "${DIM}Install: sudo dnf install -y weasyprint${NC}"
+            echo "${DIM}Or use option 4 (HTML) then Ctrl+P in browser to save as PDF.${NC}"
+            cat /tmp/pdf_err.txt | head -3
+          fi
+        else
+          echo "${RED}pandoc not installed.${NC}"
+        fi
+        pause
+        ;;
+
+      4)
+        echo "${DIM}Generating HTML...${NC}"
+        if command -v pandoc >/dev/null 2>&1; then
+          pandoc reports/executive_summary.md \
+            -o reports/exports/executive_summary.html \
+            --standalone \
+            --metadata title="Executive Summary - Detection Engineering" \
+            2>/dev/null
+          echo "${GREEN}Saved: reports/exports/executive_summary.html${NC}"
+          echo "${DIM}Open with: firefox reports/exports/executive_summary.html${NC}"
+          echo "${DIM}Then Ctrl+P to save as PDF if needed.${NC}"
+        else
+          echo "${RED}pandoc not installed.${NC}"
+        fi
+        pause
+        ;;
+
+      5)
+        echo "${DIM}Generating DOCX...${NC}"
+        if command -v pandoc >/dev/null 2>&1; then
+          pandoc reports/executive_summary.md \
+            -o reports/exports/executive_summary.docx \
+            2>/dev/null
+          echo "${GREEN}Saved: reports/exports/executive_summary.docx${NC}"
+          ls -lh reports/exports/executive_summary.docx
+        else
+          echo "${RED}pandoc not installed.${NC}"
+        fi
+        pause
+        ;;
+
+      6)
+        echo "${DIM}Generating PPTX from presentation source...${NC}"
+        if command -v pandoc >/dev/null 2>&1; then
+          pandoc reports/final_presentation.md \
+            -o reports/exports/final_presentation.pptx \
+            2>/dev/null
+          echo "${GREEN}Saved: reports/exports/final_presentation.pptx${NC}"
+          ls -lh reports/exports/final_presentation.pptx
+        else
+          echo "${RED}pandoc not installed.${NC}"
+        fi
+        pause
+        ;;
+
+      7)
+        echo "${DIM}Exporting ALL formats...${NC}"
+        echo ""
+        cp reports/executive_summary.md reports/exports/executive_summary.md
+        echo "  [OK] Markdown"
+
+        if command -v pandoc >/dev/null 2>&1; then
+          pandoc reports/executive_summary.md -o reports/exports/executive_summary.html --standalone --metadata title="Executive Summary" 2>/dev/null && \
+            echo "  [OK] HTML" || echo "  [FAIL] HTML"
+
+          pandoc reports/executive_summary.md -o reports/exports/executive_summary.docx 2>/dev/null && \
+            echo "  [OK] DOCX" || echo "  [FAIL] DOCX"
+
+          pandoc reports/executive_summary.md -o reports/exports/executive_summary.pdf --pdf-engine=weasyprint 2>/dev/null && \
+            echo "  [OK] PDF" || echo "  [SKIP] PDF (weasyprint not installed)"
+
+          pandoc reports/final_presentation.md -o reports/exports/final_presentation.pptx 2>/dev/null && \
+            echo "  [OK] PPTX" || echo "  [FAIL] PPTX"
+        fi
+
+        echo ""
+        echo "${GREEN}All exports saved to: reports/exports/${NC}"
+        echo ""
+        ls -lh reports/exports/
+        pause
+        ;;
+
+      0|"")
+        return
+        ;;
+
+      *)
+        echo "${RED}Invalid choice.${NC}"
+        sleep 1
+        ;;
+    esac
+  done
 }
 
 action_9() {
