@@ -103,7 +103,7 @@ show_menu() {
   echo "  ${BOLD}9)${NC}  Convert rules to Splunk/Lucene/EQL"
   echo "  ${BOLD}10)${NC} Show git history"
   echo "  ${BOLD}11)${NC} Show project statistics"
-  echo "  ${BOLD}12)${NC} Regenerate presentation PPTX"
+  echo "  ${BOLD}12)${NC} Presentation - export & open       ${DIM}(PPTX/PDF/HTML/DOCX)${NC}"
   echo ""
   echo "  ${BOLD}0)${NC}  Exit"
   echo ""
@@ -403,16 +403,158 @@ action_11() {
 }
 
 action_12() {
-  echo "${BOLD}==> Regenerating presentation...${NC}"
-  echo ""
-  if command -v pandoc >/dev/null 2>&1; then
-    pandoc reports/final_presentation.md -o reports/final_presentation.pptx 2>/dev/null && \
-      echo "${GREEN}Wrote reports/final_presentation.pptx${NC}" || \
-      echo "${YELLOW}pandoc failed - install pandoc to regenerate PPTX${NC}"
-  else
-    echo "${YELLOW}pandoc not installed. Run: sudo dnf install -y pandoc${NC}"
-  fi
-  pause
+  while true; do
+    clear
+    echo "${BOLD}${CYAN}============================================================${NC}"
+    echo "${BOLD}${CYAN}   PRESENTATION - CHOOSE OUTPUT FORMAT${NC}"
+    echo "${BOLD}${CYAN}============================================================${NC}"
+    echo ""
+    echo "  Source: reports/final_presentation.md"
+    echo "  Slides: $(grep -c '^## Slide' reports/final_presentation.md 2>/dev/null || echo 0) sections"
+    echo ""
+    echo "  ${BOLD}1)${NC}  View slide outline on screen      ${DIM}(less)${NC}"
+    echo "  ${BOLD}2)${NC}  Export as PowerPoint (.pptx)      ${DIM}(best for delivery)${NC}"
+    echo "  ${BOLD}3)${NC}  Export as PDF                     ${DIM}(.pdf)${NC}"
+    echo "  ${BOLD}4)${NC}  Export as HTML                    ${DIM}(.html - open in browser)${NC}"
+    echo "  ${BOLD}5)${NC}  Export as Word document           ${DIM}(.docx)${NC}"
+    echo "  ${BOLD}6)${NC}  Export as Markdown                ${DIM}(.md)${NC}"
+    echo "  ${BOLD}7)${NC}  Export ALL formats                ${DIM}(everything at once)${NC}"
+    echo "  ${BOLD}8)${NC}  Open existing presentation         ${DIM}(if already exported)${NC}"
+    echo ""
+    echo "  ${BOLD}0)${NC}  Back to main menu"
+    echo ""
+    read -rp "${BOLD}Choose [0-8]: ${NC}" fmt
+
+    mkdir -p reports/exports
+    local out=""
+
+    case "$fmt" in
+      1)
+        less reports/final_presentation.md
+        continue
+        ;;
+
+      2)
+        out="reports/exports/final_presentation.pptx"
+        if command -v pandoc >/dev/null 2>&1; then
+          pandoc reports/final_presentation.md -o "$out" 2>/dev/null && \
+            echo "${GREEN}Saved: $out${NC}" && ls -lh "$out" && ask_open "$out" || \
+            echo "${RED}PPTX generation failed.${NC}"
+        else
+          echo "${RED}pandoc not installed. Run: sudo dnf install -y pandoc${NC}"
+        fi
+        pause
+        ;;
+
+      3)
+        out="reports/exports/final_presentation.pdf"
+        if command -v pandoc >/dev/null 2>&1; then
+          if pandoc reports/final_presentation.md -o "$out" --pdf-engine=weasyprint 2>/tmp/pdf_err.txt; then
+            echo "${GREEN}Saved: $out${NC}"
+            ls -lh "$out"
+            ask_open "$out"
+          else
+            echo "${YELLOW}PDF engine (weasyprint) unavailable.${NC}"
+            echo "${DIM}Try option 4 (HTML) and use Ctrl+P in browser to save as PDF.${NC}"
+            head -3 /tmp/pdf_err.txt
+          fi
+        fi
+        pause
+        ;;
+
+      4)
+        out="reports/exports/final_presentation.html"
+        pandoc reports/final_presentation.md -o "$out" --standalone \
+          --metadata title="Final Presentation - Detection Engineering" 2>/dev/null
+        echo "${GREEN}Saved: $out${NC}"
+        echo "${DIM}Tip: In browser, press Ctrl+P -> Save as PDF for a printable slide deck.${NC}"
+        ask_open "$out"
+        pause
+        ;;
+
+      5)
+        out="reports/exports/final_presentation.docx"
+        pandoc reports/final_presentation.md -o "$out" 2>/dev/null
+        echo "${GREEN}Saved: $out${NC}"
+        ls -lh "$out"
+        ask_open "$out"
+        pause
+        ;;
+
+      6)
+        out="reports/exports/final_presentation.md"
+        cp reports/final_presentation.md "$out"
+        echo "${GREEN}Saved: $out${NC}"
+        ask_open "$out"
+        pause
+        ;;
+
+      7)
+        echo "${DIM}Exporting ALL formats...${NC}"
+        echo ""
+        local generated=()
+
+        cp reports/final_presentation.md reports/exports/final_presentation.md
+        generated+=("reports/exports/final_presentation.md")
+        echo "  [OK] Markdown"
+
+        pandoc reports/final_presentation.md -o reports/exports/final_presentation.html \
+          --standalone --metadata title="Final Presentation" 2>/dev/null && \
+          { echo "  [OK] HTML"; generated+=("reports/exports/final_presentation.html"); }
+
+        pandoc reports/final_presentation.md -o reports/exports/final_presentation.docx 2>/dev/null && \
+          { echo "  [OK] DOCX"; generated+=("reports/exports/final_presentation.docx"); }
+
+        pandoc reports/final_presentation.md -o reports/exports/final_presentation.pptx 2>/dev/null && \
+          { echo "  [OK] PPTX"; generated+=("reports/exports/final_presentation.pptx"); }
+
+        if pandoc reports/final_presentation.md -o reports/exports/final_presentation.pdf --pdf-engine=weasyprint 2>/dev/null; then
+          echo "  [OK] PDF"
+          generated+=("reports/exports/final_presentation.pdf")
+        else
+          echo "  [SKIP] PDF (weasyprint not installed)"
+        fi
+
+        echo ""
+        echo "${GREEN}All exports saved to: reports/exports/${NC}"
+        ls -lh reports/exports/ | grep -i presentation
+        echo ""
+        echo "${BOLD}Generated files:${NC}"
+        local i=1
+        for g in "${generated[@]}"; do
+          echo "  $i) $g"
+          i=$((i+1))
+        done
+        echo ""
+        read -rp "${BOLD}Open which file? [1-${#generated[@]}, or 0 to skip]: ${NC}" pick
+        if [[ "$pick" =~ ^[0-9]+$ ]] && [ "$pick" -ge 1 ] && [ "$pick" -le "${#generated[@]}" ]; then
+          ask_open "${generated[$((pick-1))]}"
+        fi
+        pause
+        ;;
+
+      8)
+        if [ -f reports/exports/final_presentation.pptx ]; then
+          ask_open reports/exports/final_presentation.pptx
+        elif [ -f reports/final_presentation.pptx ]; then
+          ask_open reports/final_presentation.pptx
+        else
+          echo "${YELLOW}No presentation file found yet.${NC}"
+          echo "${DIM}Choose option 2 or 7 to generate one first.${NC}"
+        fi
+        pause
+        ;;
+
+      0|"")
+        return
+        ;;
+
+      *)
+        echo "${RED}Invalid choice.${NC}"
+        sleep 1
+        ;;
+    esac
+  done
 }
 
 # ============================================================
