@@ -99,6 +99,20 @@ Three rules added as a direct result of this hunt:
 | `win_regsvr32_external_connection.yml` | T1218.010 | Finding 3 |
 | `win_certutil_download.yml` | T1105, T1140 | Finding 3 |
 
+
+## Pre-Hunt Coverage State (PRD 4.4 requirement)
+
+At the start of this hunt, the following techniques were **NOT covered** by any pre-existing detection rule:
+
+- **T1071.001 (Application Layer Protocol: Web Protocols)** - no rule detected external connections from LOLBins.
+- **T1218.005 (System Binary Proxy Execution: Mshta)** - no rule for mshta.exe outbound traffic.
+- **T1218.010 (System Binary Proxy Execution: Regsvr32)** - no rule for regsvr32.exe outbound traffic.
+- **T1140 (Deobfuscate/Decode Files or Information)** - no rule for certutil download cradles.
+
+This satisfies PRD requirement 4.4: "At least one hunt must be based on a specific ATT&CK technique not already covered by an existing detection rule."
+
+The three new rules added as a direct result of this hunt (`win_mshta_external_connection.yml`, `win_regsvr32_external_connection.yml`, `win_certutil_download.yml`) close these gaps.
+
 ## ATT&CK Mapping
 
 - T1071.001 — Application Layer Protocol: Web Protocols

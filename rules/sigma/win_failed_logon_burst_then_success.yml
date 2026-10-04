@@ -1,0 +1,25 @@
+title: Failed Logon Burst Followed by Success
+id: 20000001-0001-0001-0001-000000000001
+status: experimental
+description: Correlation-style detection. Multiple failed logons (EventID 4625) for the same account followed by a successful logon (EventID 4624) within a short window. Indicates brute force leading to credential compromise. Requires backend support for the near operator across temporally adjacent events.
+references:
+  - https://attack.mitre.org/techniques/T1110/
+  - https://attack.mitre.org/techniques/T1078/
+author: Cyberion Detection Engineering
+date: 2026/04/04
+tags:
+  - attack.t1110
+  - attack.t1078
+logsource:
+  product: windows
+  service: security
+detection:
+  selection_failed:
+    EventID: 4625
+  selection_success:
+    EventID: 4624
+  condition: selection_success | near selection_failed
+falsepositives:
+  - User mistyping password several times before succeeding
+  - Legitimate service account retry after transient failure
+level: high

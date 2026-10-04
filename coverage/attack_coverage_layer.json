@@ -142,6 +142,56 @@
       "techniqueID": "T1036.005",
       "color": "#00ff00",
       "comment": "Covered: 10000009-0009-0009-0009-000000000009 From Incident 002"
+    },
+    {
+      "techniqueID": "T1059.003",
+      "color": "#ffff00",
+      "comment": "Partially Covered: win_ping_delay_and_hidden_delete.yml Only cmd.exe with anti-sandbox pattern; generic shell execution not covered"
+    },
+    {
+      "techniqueID": "T1110",
+      "color": "#ffff00",
+      "comment": "Partially Covered: win_failed_logon_burst_then_success.yml Correlation rule detects burst then success; single-source lockout alerts not covered"
+    },
+    {
+      "techniqueID": "T1087",
+      "color": "#ff0000",
+      "comment": "Not Covered:  No rule for net user / whoami enumeration patterns"
+    },
+    {
+      "techniqueID": "T1082",
+      "color": "#ff0000",
+      "comment": "Not Covered:  No rule for systeminfo / hostname reconnaissance"
+    },
+    {
+      "techniqueID": "T1018",
+      "color": "#ff0000",
+      "comment": "Not Covered:  No rule for net view / ping sweeps"
+    },
+    {
+      "techniqueID": "T1090",
+      "color": "#ff0000",
+      "comment": "Not Covered:  No rule for proxy chains or tor exit nodes"
+    },
+    {
+      "techniqueID": "T1041",
+      "color": "#ff0000",
+      "comment": "Not Covered:  No rule for anomalous outbound data volume"
+    },
+    {
+      "techniqueID": "T1486",
+      "color": "#ff0000",
+      "comment": "Not Covered:  No rule for mass file encryption or ransom note creation"
+    },
+    {
+      "techniqueID": "T1566",
+      "color": "#ffff00",
+      "comment": "Partially Covered: win_office_spawns_powershell.yml Detects Office spawning shells; no email gateway telemetry in corpus"
+    },
+    {
+      "techniqueID": "T1021.001",
+      "color": "#ffff00",
+      "comment": "Partially Covered: win_winrm_session_created.yml WinRM covered; RDP session events not analysed"
     }
   ],
   "gradient": {
