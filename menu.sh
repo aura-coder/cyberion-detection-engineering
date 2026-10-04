@@ -28,6 +28,59 @@ pause() {
   read -rp "${DIM}Press Enter to return to menu...${NC}" _
 }
 
+open_file() {
+  local f="$1"
+  [ -f "$f" ] || { echo "${RED}File not found: $f${NC}"; return 1; }
+
+  local ext="${f##*.}"
+  local opener=""
+
+  case "$ext" in
+    md|txt|log|json|yml|yaml)
+      opener="${PAGER:-less}"
+      ;;
+    pdf)
+      if   command -v xdg-open >/dev/null 2>&1; then opener="xdg-open"
+      elif command -v firefox  >/dev/null 2>&1; then opener="firefox"
+      elif command -v evince   >/dev/null 2>&1; then opener="evince"
+      fi
+      ;;
+    html|htm)
+      if   command -v firefox  >/dev/null 2>&1; then opener="firefox"
+      elif command -v xdg-open >/dev/null 2>&1; then opener="xdg-open"
+      fi
+      ;;
+    docx|doc|pptx|ppt|xlsx|xls|odt|ods)
+      if   command -v libreoffice >/dev/null 2>&1; then opener="libreoffice --norestore"
+      elif command -v xdg-open    >/dev/null 2>&1; then opener="xdg-open"
+      fi
+      ;;
+    *)
+      if command -v xdg-open >/dev/null 2>&1; then opener="xdg-open"; fi
+      ;;
+  esac
+
+  if [ -z "$opener" ]; then
+    echo "${YELLOW}No opener found for .$ext - open manually: $f${NC}"
+    return 1
+  fi
+
+  echo "${CYAN}Opening with: $opener${NC}"
+  # shellcheck disable=SC2086
+  $opener "$f" &
+}
+
+ask_open() {
+  local f="$1"
+  [ -f "$f" ] || return 1
+  echo ""
+  read -rp "${BOLD}Open the file now? [y/N]: ${NC}" ans
+  case "$ans" in
+    y|Y|yes|YES) open_file "$f" ;;
+    *) echo "${DIM}Not opened. File location: $f${NC}" ;;
+  esac
+}
+
 header() {
   clear
   echo "${BOLD}${CYAN}============================================================${NC}"
@@ -178,120 +231,119 @@ action_8() {
     echo "  Source file: reports/executive_summary.md"
     echo "  Size: $(wc -l < reports/executive_summary.md) lines"
     echo ""
-    echo "  ${BOLD}1)${NC}  View on screen                  ${DIM}(less, scroll with spacebar)${NC}"
-    echo "  ${BOLD}2)${NC}  Export as Markdown              ${DIM}(.md - plain text, best for git)${NC}"
-    echo "  ${BOLD}3)${NC}  Export as PDF                   ${DIM}(.pdf - printable, best for submission)${NC}"
-    echo "  ${BOLD}4)${NC}  Export as HTML                  ${DIM}(.html - opens in browser, printable)${NC}"
-    echo "  ${BOLD}5)${NC}  Export as Word document         ${DIM}(.docx - editable)${NC}"
-    echo "  ${BOLD}6)${NC}  Export as PowerPoint            ${DIM}(.pptx - slide deck)${NC}"
-    echo "  ${BOLD}7)${NC}  Export ALL formats              ${DIM}(everything above at once)${NC}"
+    echo "  ${BOLD}1)${NC}  View on screen              ${DIM}(less)${NC}"
+    echo "  ${BOLD}2)${NC}  Export as Markdown          ${DIM}(.md)${NC}"
+    echo "  ${BOLD}3)${NC}  Export as PDF               ${DIM}(.pdf)${NC}"
+    echo "  ${BOLD}4)${NC}  Export as HTML              ${DIM}(.html)${NC}"
+    echo "  ${BOLD}5)${NC}  Export as Word document     ${DIM}(.docx)${NC}"
+    echo "  ${BOLD}6)${NC}  Export as PowerPoint        ${DIM}(.pptx)${NC}"
+    echo "  ${BOLD}7)${NC}  Export ALL formats          ${DIM}(everything at once)${NC}"
     echo ""
     echo "  ${BOLD}0)${NC}  Back to main menu"
     echo ""
     read -rp "${BOLD}Choose [0-7]: ${NC}" fmt
 
     mkdir -p reports/exports
+    local out=""
 
     case "$fmt" in
       1)
         less reports/executive_summary.md
+        continue
         ;;
 
       2)
-        cp reports/executive_summary.md reports/exports/executive_summary.md
-        echo "${GREEN}Saved: reports/exports/executive_summary.md${NC}"
+        out="reports/exports/executive_summary.md"
+        cp reports/executive_summary.md "$out"
+        echo "${GREEN}Saved: $out${NC}"
+        ask_open "$out"
         pause
         ;;
 
       3)
-        echo "${DIM}Generating PDF (using weasyprint)...${NC}"
+        out="reports/exports/executive_summary.pdf"
         if command -v pandoc >/dev/null 2>&1; then
-          if pandoc reports/executive_summary.md \
-                -o reports/exports/executive_summary.pdf \
-                --pdf-engine=weasyprint 2>/tmp/pdf_err.txt; then
-            echo "${GREEN}Saved: reports/exports/executive_summary.pdf${NC}"
-            ls -lh reports/exports/executive_summary.pdf
+          if pandoc reports/executive_summary.md -o "$out" --pdf-engine=weasyprint 2>/tmp/pdf_err.txt; then
+            echo "${GREEN}Saved: $out${NC}"
+            ls -lh "$out"
+            ask_open "$out"
           else
-            echo "${YELLOW}PDF engine (weasyprint) not available.${NC}"
-            echo "${DIM}Install: sudo dnf install -y weasyprint${NC}"
-            echo "${DIM}Or use option 4 (HTML) then Ctrl+P in browser to save as PDF.${NC}"
-            cat /tmp/pdf_err.txt | head -3
+            echo "${YELLOW}PDF engine (weasyprint) unavailable.${NC}"
+            echo "${DIM}Try option 4 (HTML) and Ctrl+P in browser to save as PDF.${NC}"
+            head -3 /tmp/pdf_err.txt
           fi
-        else
-          echo "${RED}pandoc not installed.${NC}"
         fi
         pause
         ;;
 
       4)
-        echo "${DIM}Generating HTML...${NC}"
-        if command -v pandoc >/dev/null 2>&1; then
-          pandoc reports/executive_summary.md \
-            -o reports/exports/executive_summary.html \
-            --standalone \
-            --metadata title="Executive Summary - Detection Engineering" \
-            2>/dev/null
-          echo "${GREEN}Saved: reports/exports/executive_summary.html${NC}"
-          echo "${DIM}Open with: firefox reports/exports/executive_summary.html${NC}"
-          echo "${DIM}Then Ctrl+P to save as PDF if needed.${NC}"
-        else
-          echo "${RED}pandoc not installed.${NC}"
-        fi
+        out="reports/exports/executive_summary.html"
+        pandoc reports/executive_summary.md -o "$out" --standalone \
+          --metadata title="Executive Summary - Detection Engineering" 2>/dev/null
+        echo "${GREEN}Saved: $out${NC}"
+        ask_open "$out"
         pause
         ;;
 
       5)
-        echo "${DIM}Generating DOCX...${NC}"
-        if command -v pandoc >/dev/null 2>&1; then
-          pandoc reports/executive_summary.md \
-            -o reports/exports/executive_summary.docx \
-            2>/dev/null
-          echo "${GREEN}Saved: reports/exports/executive_summary.docx${NC}"
-          ls -lh reports/exports/executive_summary.docx
-        else
-          echo "${RED}pandoc not installed.${NC}"
-        fi
+        out="reports/exports/executive_summary.docx"
+        pandoc reports/executive_summary.md -o "$out" 2>/dev/null
+        echo "${GREEN}Saved: $out${NC}"
+        ls -lh "$out"
+        ask_open "$out"
         pause
         ;;
 
       6)
-        echo "${DIM}Generating PPTX from presentation source...${NC}"
-        if command -v pandoc >/dev/null 2>&1; then
-          pandoc reports/final_presentation.md \
-            -o reports/exports/final_presentation.pptx \
-            2>/dev/null
-          echo "${GREEN}Saved: reports/exports/final_presentation.pptx${NC}"
-          ls -lh reports/exports/final_presentation.pptx
-        else
-          echo "${RED}pandoc not installed.${NC}"
-        fi
+        out="reports/exports/final_presentation.pptx"
+        pandoc reports/final_presentation.md -o "$out" 2>/dev/null
+        echo "${GREEN}Saved: $out${NC}"
+        ls -lh "$out"
+        ask_open "$out"
         pause
         ;;
 
       7)
         echo "${DIM}Exporting ALL formats...${NC}"
         echo ""
+        local generated=()
+
         cp reports/executive_summary.md reports/exports/executive_summary.md
+        generated+=("reports/exports/executive_summary.md")
         echo "  [OK] Markdown"
 
-        if command -v pandoc >/dev/null 2>&1; then
-          pandoc reports/executive_summary.md -o reports/exports/executive_summary.html --standalone --metadata title="Executive Summary" 2>/dev/null && \
-            echo "  [OK] HTML" || echo "  [FAIL] HTML"
+        pandoc reports/executive_summary.md -o reports/exports/executive_summary.html \
+          --standalone --metadata title="Executive Summary" 2>/dev/null && \
+          { echo "  [OK] HTML"; generated+=("reports/exports/executive_summary.html"); }
 
-          pandoc reports/executive_summary.md -o reports/exports/executive_summary.docx 2>/dev/null && \
-            echo "  [OK] DOCX" || echo "  [FAIL] DOCX"
+        pandoc reports/executive_summary.md -o reports/exports/executive_summary.docx 2>/dev/null && \
+          { echo "  [OK] DOCX"; generated+=("reports/exports/executive_summary.docx"); }
 
-          pandoc reports/executive_summary.md -o reports/exports/executive_summary.pdf --pdf-engine=weasyprint 2>/dev/null && \
-            echo "  [OK] PDF" || echo "  [SKIP] PDF (weasyprint not installed)"
-
-          pandoc reports/final_presentation.md -o reports/exports/final_presentation.pptx 2>/dev/null && \
-            echo "  [OK] PPTX" || echo "  [FAIL] PPTX"
+        if pandoc reports/executive_summary.md -o reports/exports/executive_summary.pdf --pdf-engine=weasyprint 2>/dev/null; then
+          echo "  [OK] PDF"
+          generated+=("reports/exports/executive_summary.pdf")
+        else
+          echo "  [SKIP] PDF (weasyprint not installed)"
         fi
+
+        pandoc reports/final_presentation.md -o reports/exports/final_presentation.pptx 2>/dev/null && \
+          { echo "  [OK] PPTX"; generated+=("reports/exports/final_presentation.pptx"); }
 
         echo ""
         echo "${GREEN}All exports saved to: reports/exports/${NC}"
-        echo ""
         ls -lh reports/exports/
+        echo ""
+        echo "${BOLD}Generated files:${NC}"
+        local i=1
+        for g in "${generated[@]}"; do
+          echo "  $i) $g"
+          i=$((i+1))
+        done
+        echo ""
+        read -rp "${BOLD}Open which file? [1-${#generated[@]}, or 0 to skip]: ${NC}" pick
+        if [[ "$pick" =~ ^[0-9]+$ ]] && [ "$pick" -ge 1 ] && [ "$pick" -le "${#generated[@]}" ]; then
+          ask_open "${generated[$((pick-1))]}"
+        fi
         pause
         ;;
 
