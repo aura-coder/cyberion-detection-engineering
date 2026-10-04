@@ -1,0 +1,1 @@
+any where event.code:"1" and process.executable.caseless:"*\\powershell.exe" and (process.command_line like~ ("*-EncodedCommand*", "*-enc *", "*-e *"))

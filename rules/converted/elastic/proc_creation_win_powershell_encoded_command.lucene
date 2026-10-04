@@ -1,0 +1,1 @@
+event.code:1 AND process.executable.caseless:*\\powershell.exe AND (process.command_line:(*\-EncodedCommand* OR *\-enc\ * OR *\-e\ *))

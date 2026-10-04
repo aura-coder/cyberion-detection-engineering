@@ -1,0 +1,20 @@
+title: Short descriptive title
+id: 00000000-0000-0000-0000-000000000000
+status: experimental
+description: Detects attacker behavior.
+references:
+  - https://attack.mitre.org/techniques/TXXXX/
+author: Your Name
+date: 2026/04/04
+tags:
+  - attack.tXXXX
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    FieldName: value
+  condition: selection
+falsepositives:
+  - Legitimate admin activity
+level: medium

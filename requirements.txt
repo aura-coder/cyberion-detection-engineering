@@ -1,0 +1,8 @@
+sigma-cli
+pysigma
+pysigma-backend-elasticsearch
+pysigma-backend-splunk
+pandas
+jupyterlab
+pyyaml
+python-evtx

@@ -1,0 +1,1 @@
+EventID:1 AND Image:*\\powershell.exe AND (CommandLine:(*\-EncodedCommand* OR *\-enc\ * OR *\-e\ *))
