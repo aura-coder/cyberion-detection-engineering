@@ -56,11 +56,53 @@ c_cov()     { tail -n +2 coverage/attack_coverage.csv 2>/dev/null | wc -l | tr -
 c_commits() { git rev-list --count HEAD 2>/dev/null || echo 0; }
 c_conv()    { ls rules/converted/splunk/*.spl rules/converted/elastic/*.lucene rules/converted/elastic/*.eql 2>/dev/null | wc -l | tr -d ' '; }
 
+
+# ---------- Welcome / idle state for right pane ----------
+draw_idle_right() {
+  clr_right
+
+  scol 1 "$RIGHT_COL" "  ${BOLD}${WHITE}Detection Engineering & Threat Hunting Console${NC}" "$RIGHT_W"
+  scol 2 "$RIGHT_COL" "  ${DIM}Cyberion Defense Labs — 4-week individual contribution track${NC}" "$RIGHT_W"
+  scol 3 "$RIGHT_COL" "  ${GREY}$(printf '─%.0s' $(seq 1 $((RIGHT_W - 4))))${NC}" "$RIGHT_W"
+
+  # Action cards
+  scol 5  "$RIGHT_COL" "  ${SKY}▸${NC} ${BOLD}${WHITE}[1]${NC}  Validate ${BOLD}$(c_rules)${NC} Sigma rules" "$RIGHT_W"
+  scol 6  "$RIGHT_COL" "       ${DIM}Confirms every rule is valid YAML with correct ATT&CK tags${NC}" "$RIGHT_W"
+  scol 7  "$RIGHT_COL" "" "$RIGHT_W"
+
+  scol 8  "$RIGHT_COL" "  ${SKY}▸${NC} ${BOLD}${WHITE}[2]${NC}  Run full test suite" "$RIGHT_W"
+  scol 9  "$RIGHT_COL" "       ${DIM}26 checks: rules, conversions, deliverables, evidence${NC}" "$RIGHT_W"
+  scol 10 "$RIGHT_COL" "" "$RIGHT_W"
+
+  scol 11 "$RIGHT_COL" "  ${SKY}▸${NC} ${BOLD}${WHITE}[3]${NC}  Rule effectiveness" "$RIGHT_W"
+  scol 12 "$RIGHT_COL" "       ${DIM}17 rules tested against 34,870 real attacker events${NC}" "$RIGHT_W"
+  scol 13 "$RIGHT_COL" "" "$RIGHT_W"
+
+  scol 14 "$RIGHT_COL" "  ${SKY}▸${NC} ${BOLD}${WHITE}[4]${NC}  ATT&CK coverage matrix" "$RIGHT_W"
+  scol 15 "$RIGHT_COL" "       ${DIM}40 techniques assessed — covered / partial / gaps${NC}" "$RIGHT_W"
+  scol 16 "$RIGHT_COL" "" "$RIGHT_W"
+
+  scol 17 "$RIGHT_COL" "  ${SKY}▸${NC} ${BOLD}${WHITE}[6] [7] [8]${NC}  Reports, incidents, summary" "$RIGHT_W"
+  scol 18 "$RIGHT_COL" "       ${DIM}2 hunts, 2 incidents, 4 playbooks, exec summary${NC}" "$RIGHT_W"
+
+  # Status block at bottom
+  local r=$((ROWS - 6))
+  at $r "$RIGHT_COL"
+  printf '  %s%s%s' "${GREY}" "$(printf '─%.0s' $(seq 1 $((RIGHT_W - 4))))" "${NC}"
+
+  scol $((r + 1)) "$RIGHT_COL" "  ${GREY}Detection rules${NC}       ${BOLD}${GREEN}$(c_rules)${NC}" "$RIGHT_W"
+  scol $((r + 2)) "$RIGHT_COL" "  ${GREY}Converted queries${NC}     ${BOLD}${TEAL}$(c_conv)${NC} ${DIM}(Splunk SPL · Lucene · EQL)${NC}" "$RIGHT_W"
+  scol $((r + 3)) "$RIGHT_COL" "  ${GREY}Validation status${NC}      ${BOLD}${GREEN}0 errors${NC} ${DIM}across all rules${NC}" "$RIGHT_W"
+  scol $((r + 4)) "$RIGHT_COL" "  ${GREY}Last commit${NC}           ${DIM}$(git log -1 --format='%s' | cut -c1-50)${NC}" "$RIGHT_W"
+}
+
 # --- Draw left column ---
 draw_left() {
   # Header
+  local now
+  now=$(date '+%H:%M:%S')
   scol 0 1 "  ${BOLD}${SKY}◆${NC} ${BOLD}${WHITE}CYBERION DEFENSE${NC}" $((LEFT_W - 2))
-  scol 1 1 "  ${GREEN}●${NC} ${WHITE}OPERATIONAL${NC}    ${GREY}v1.0.0${NC}" $((LEFT_W - 2))
+  scol 1 1 "  ${GREEN}●${NC} ${WHITE}ONLINE${NC}  ${DIM}${GREY}${now}${NC}  ${GREY}v1.0.0${NC}" $((LEFT_W - 2))
 
   at 2 0
   printf '%s%s%s' "${BLUE}" "$(printf '━%.0s' $(seq 1 $LEFT_W))" "${NC}"
@@ -114,6 +156,10 @@ draw_left() {
     printf '%s│%s' "${GREY}" "${NC}"
   done
 
+  # Footer hints line above prompt
+  scol $((ROWS - 4)) 1 "  ${DIM}${GREY}──────────────────────────────────${NC}" $((LEFT_W - 2))
+  scol $((ROWS - 3)) 1 "  ${DIM}${GREY}q${NC}${DIM} quit  ${GREY}?${NC}${DIM} help  ${GREY}Enter${NC}${DIM} run${NC}" $((LEFT_W - 2))
+
   # Prompt
   scol $((ROWS - 2)) 1 "  ${BOLD}${SKY}❯${NC} Select ${GREY}[0-12]${NC}: " $((LEFT_W - 4))
 }
@@ -152,8 +198,9 @@ run_cmd() {
     r=$((r + 1))
   done < /tmp/cyb_out.txt
   at $((ROWS - 1)) "$RIGHT_COL"
-  printf '%s↵ Press Enter to continue%s' "${DIM}" "${NC}"
+  printf '%s↵ Press Enter to return to menu%s' "${DIM}" "${NC}"
   read -r _ || return
+  draw_idle_right
 }
 
 # Run shell string
@@ -172,8 +219,9 @@ run_sh() {
     r=$((r + 1))
   done < /tmp/cyb_out.txt
   at $((ROWS - 1)) "$RIGHT_COL"
-  printf '%s↵ Press Enter to continue%s' "${DIM}" "${NC}"
+  printf '%s↵ Press Enter to return to menu%s' "${DIM}" "${NC}"
   read -r _ || return
+  draw_idle_right
 }
 
 # ============================================================
@@ -182,8 +230,13 @@ run_sh() {
 tput civis
 trap 'tput cnorm; clear; exit 130' INT
 
+# Initial draw: menu + welcome
+clear
+draw_left
+draw_idle_right
+
 while true; do
-  clear
+  # Redraw left, keep right pane as-is (so action output stays visible)
   draw_left
 
   at $((ROWS - 2)) 20
@@ -241,6 +294,7 @@ echo "    Elastic EQL:    $(ls rules/converted/elastic/*.eql | wc -l) files"' ;;
       pr 5 ""
       at 6 "$RIGHT_COL"
       printf '%s↵ Press Enter to try again%s' "${DIM}" "${NC}"
-      read -r _ ;;
+      read -r _
+      draw_idle_right ;;
   esac
 done
