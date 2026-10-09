@@ -21,7 +21,7 @@
 
 - Cobalt Strike intrusion: LSASS dump + injection into the credential process
 - LOLBin C2 chain: mshta / WMIC contacting Vultr and Moroccan VPS infrastructure
-- 24 Sigma rules built, tested, and mapped to 23 MITRE ATT&CK techniques
+- 27 detection rules built and mapped to 33 MITRE ATT&CK techniques (14 of 24 standalone rules validated on real telemetry)
 
 ---
 
@@ -104,16 +104,16 @@ Both hunts fed directly into new Sigma rules.
 
 ## Slide 10 — Detection Quality
 
-- **100%** of rules validated against real telemetry
-- **100%** of rules include documented false-positive discussion
-- **0** validation errors across 24 rules
-- Every rule converted to Splunk SPL, Elastic Lucene, and EQL
+- **14 / 24** standalone rules validated against real telemetry (correlation rules: synthetic proof)
+- **100%** of detection rules (27/27) include documented false-positive discussion
+- **0** validation errors across 33 rules
+- Rules converted to Splunk SPL, Elastic Lucene and EQL (correlation rules: Splunk only)
 
 ---
 
 ## Slide 11 — Deliverables Summary
 
-- 24 Sigma rules (versioned in git)
+- 27 detection rules + 6 base rules (versioned in git)
 - ATT&CK coverage matrix + Navigator layer
 - 2 hunt reports with evidence
 - 2 incident case reports (True Positive)
@@ -128,7 +128,7 @@ Both hunts fed directly into new Sigma rules.
 
 **Immediate:**
 - Rotate credentials for any account that logged on to the compromised host
-- Deploy the 24 Sigma rules via the SIEM pipeline
+- Deploy the 27 detection rules via the SIEM pipeline
 
 **Short-term:**
 - Extend coverage to cloud logs (Azure AD, CloudTrail)

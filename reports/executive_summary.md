@@ -42,12 +42,12 @@ Across the four-week engagement, we built a **documented, MITRE ATT&CK-mapped de
 
 ### Immediate (Week 5)
 1. **Treat Case 001 as a live incident**, not a lab exercise: rotate any real credentials that match the pattern observed.
-2. Deploy the 22 Sigma rules via the SIEM pipeline (converted artifacts in rules/converted/).
+2. Deploy the 27 detection rules via the SIEM pipeline (converted artifacts in rules/converted/).
 3. Subscribe to threat intel for the IPs and domains in iocs/ioc_research_notes.md.
 
 ### Short-term (Month 2)
 1. Extend coverage to cloud log sources (Azure AD, AWS CloudTrail) — currently only Windows event logs are covered.
-2. Stand up a continuous purple-team loop using Atomic Red Team (already cloned locally) to validate the 22 rules on a rolling basis.
+2. Stand up a continuous purple-team loop using Atomic Red Team (already cloned locally) to validate the 27 rules on a rolling basis.
 3. Build automated triage for the three IR playbooks so shift analysts can execute them without re-reading.
 
 ### Long-term (Quarter)
@@ -57,12 +57,12 @@ Across the four-week engagement, we built a **documented, MITRE ATT&CK-mapped de
 
 ## Metrics
 
-- **Sigma rules delivered:** 22 (target: 15) — 47% over target
-- **Techniques documented on coverage matrix:** 25 (target: 20) — 25% over target
+- **Detection rules delivered:** 27 (24 standalone + 3 correlation; target: 15) — 80% over target, plus 6 base building-block rules
+- **Techniques documented on coverage matrix:** 33 unique (target: 20) — 11 Covered, 16 Partially Covered, 6 Not Covered
 - **Hunts run:** 2 (target: 2) — both yielded confirmed findings
-- **Confirmed incidents:** 1 (target: 2) — one strong case rather than two weak ones
-- **Rules validated against real telemetry:** 22/22 (100%)
-- **Rules with documented false-positive discussion:** 22/22 (100%)
+- **Confirmed incidents:** 2 (target: 2)
+- **Rules validated against real telemetry:** 14/24 standalone rules (58%); the 3 correlation rules are proven on synthetic sequences only (the corpus has no matching sequence)
+- **Rules with documented false-positive discussion:** 27/27 detection rules (100%)
 
 ## Bottom line
 

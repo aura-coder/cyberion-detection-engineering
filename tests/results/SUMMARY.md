@@ -11,17 +11,17 @@ Result: **0 errors, 0 condition errors, 0 issues** across 33 rules.
 
 ## Level 2 — Multi-Backend Conversion
 
-All rules converted without error to:
+Standalone and base rules converted without error to the backends below. Correlation rules convert to Splunk SPL only (Sigma's Lucene and EQL backends do not support correlation rules):
 
 - Splunk SPL
 - Elastic Lucene
 - Elastic EQL
 
-Total converted artifacts: 99+ files.
+Total converted artifacts: 93 non-empty files (Splunk 33, Lucene 30, EQL 30).
 
 ## Level 3 — Rule Effectiveness (Real Telemetry)
 
-17 representative rules tested against the 34,870-event corpus by direct event matching.
+17 rules tested against the 34,870-event corpus by direct event matching: 14 standalone detection rules plus 3 base building-block rules (base rules match whole event types and are not counted as detections). The remaining 10 of 24 standalone rules had no match in this corpus and are reported as untested.
 
 | Rule | Matches |
 |------|---------|
@@ -43,7 +43,7 @@ Total converted artifacts: 99+ files.
 | base_win_successful_logon_event.yml | 87 |
 | base_win_network_connection_event.yml | 168 |
 
-**Result: 17/17 rules matched real events (100%).**
+**Result: 14/24 standalone detection rules (58%) matched real attacker events; 10 are untested on this corpus.**
 
 ## Level 4 — Correlation Rule Testing (Real Telemetry)
 
@@ -80,8 +80,8 @@ To demonstrate the correlation rules actually fire when the target sequence exis
 | Level | What it tests | Result |
 |-------|--------------|--------|
 | 1 | Sigma syntax | 0 errors / 0 issues |
-| 2 | Backend conversion | 3 backends, 99+ files |
-| 3 | Rule effectiveness (real corpus) | 17/17 (100%) |
+| 2 | Backend conversion | 93 files (Splunk 33, Lucene 30, EQL 30; correlation rules Splunk only) |
+| 3 | Rule effectiveness (real corpus) | 14/24 standalone rules (58%) |
 | 4 | Correlation vs real corpus | 0 hits — corpus lacks target sequences (documented) |
 | 5 | Correlation vs synthetic sequences | 3/3 (100%) — logic confirmed |
 | 6 | Full deliverables suite | 26/26 pass |
@@ -90,7 +90,7 @@ To demonstrate the correlation rules actually fire when the target sequence exis
 
 Two categories of results:
 
-1. **Rules that fire on real telemetry (17/17)** — the actual detection value of the engagement.
+1. **Rules that fire on real telemetry (14/24 standalone rules)** — the actual detection value of the engagement.
 2. **Correlation rules that would fire if the sequence occurred** — proven synthetically because the sample corpus is sparse.
 
 This is the correct way to report test results: **state both what succeeded and where the corpus was insufficient**, rather than claiming false positives or hiding 0-match results.

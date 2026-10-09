@@ -54,7 +54,7 @@ Each rule was converted to three backends to prove portability:
 - Elastic Lucene: `sigma convert -t lucene -p ecs_windows`
 - Elastic EQL: `sigma convert -t eql -p ecs_windows`
 
-All conversions completed without errors. Converted artifacts live in `rules/converted/`.
+Standalone and base rules converted to all three backends. Correlation rules convert to Splunk SPL only (Sigma's Lucene and EQL backends do not support correlation rules). 93 non-empty converted artifacts live in `rules/converted/` (Splunk 33, Lucene 30, EQL 30).
 
 ### Rule effectiveness testing
 Rules were tested against the JSONL corpus using `jq` queries. Example:
@@ -62,7 +62,7 @@ Rules were tested against the JSONL corpus using `jq` queries. Example:
     find data/processed/evtx-json -name '*.jsonl' -exec cat {} \; | \
       jq -c 'select(.Event.System.EventID == 1)' | wc -l
 
-This confirmed that rules which target specific EventIDs and process names actually match real events in the corpus. Evidence files are stored under `hunts/*_evidence/` and `incidents/*_evidence/`.
+This confirmed that rules which target specific EventIDs and process names actually match real events in the corpus. Of 24 standalone detection rules, 14 matched real events; 10 had no match in this corpus and are reported as untested. Note: the full corpus is 37,364 events; the rule-effectiveness run in `tests/results/SUMMARY.md` used a flattened subset (34,870 events) and the exact filtering step is being re-derived with a reproducible harness. Evidence files are stored under `hunts/*_evidence/` and `incidents/*_evidence/`.
 
 ## Limitations
 
