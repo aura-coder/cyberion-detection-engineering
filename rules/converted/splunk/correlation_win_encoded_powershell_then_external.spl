@@ -1,0 +1,8 @@
+| multisearch
+[ search Image="*\\powershell.exe" CommandLine IN ("*-EncodedCommand*", "*-enc *", "*-e *") | eval event_type="base_win_encoded_powershell_execution" ]
+[ search EventID=3 Image="*\\powershell.exe" | eval event_type="base_win_powershell_network_connection" ]
+
+| bin _time span=2m
+| stats dc(event_type) as event_type_count by _time Computer
+
+| search event_type_count >= 2

@@ -1,0 +1,8 @@
+| multisearch
+[ search EventID=4625 | eval event_type="base_win_failed_logon_event" ]
+[ search EventID=4624 | eval event_type="base_win_successful_logon_event" ]
+
+| bin _time span=5m
+| stats dc(event_type) as event_type_count by _time TargetUserName
+
+| search event_type_count >= 2

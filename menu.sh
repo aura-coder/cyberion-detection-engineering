@@ -267,20 +267,11 @@ echo
 echo "  Open:  less incidents/incident_001_lsass_dump_and_cobalt_strike.md"
 echo "         less incidents/incident_002_masqueraded_office_macro.md"' ;;
     8) run_sh "8" "Executive summary" 'head -50 reports/executive_summary.md' ;;
-    9) run_sh "9" "Convert to Splunk/Lucene/EQL" 'mkdir -p rules/converted/splunk rules/converted/elastic
-n=0; total=$(ls rules/sigma/*.yml 2>/dev/null | wc -l)
-for f in rules/sigma/*.yml; do
-  b=$(basename "$f" .yml)
-  sigma convert -t splunk --without-pipeline "$f" > "rules/converted/splunk/${b}.spl" 2>/dev/null
-  sigma convert -t lucene -p ecs_windows "$f" > "rules/converted/elastic/${b}.lucene" 2>/dev/null
-  sigma convert -t eql -p ecs_windows "$f" > "rules/converted/elastic/${b}.eql" 2>/dev/null
-  n=$((n+1))
-done
-echo "  Converted $n rules"
+    9) run_sh "9" "Convert to Splunk/Lucene/EQL" './scripts/validate.sh 2>&1 | grep -E "^\[\+\]|\[!\]|empty conversion"
 echo
-echo "    Splunk SPL:     $(ls rules/converted/splunk/*.spl | wc -l) files"
-echo "    Elastic Lucene: $(ls rules/converted/elastic/*.lucene | wc -l) files"
-echo "    Elastic EQL:    $(ls rules/converted/elastic/*.eql | wc -l) files"' ;;
+echo "    Splunk SPL:     $(find rules/converted/splunk -name "*.spl" -size +2c | wc -l) files"
+echo "    Elastic Lucene: $(find rules/converted/elastic -name "*.lucene" -size +2c | wc -l) files"
+echo "    Elastic EQL:    $(find rules/converted/elastic -name "*.eql" -size +2c | wc -l) files"' ;;
     10) run_cmd "10" "Git history" git log --oneline --decorate ;;
     11) run_cmd "11" "Project statistics" python3 scripts/menu_helpers/stats.py ;;
     12) run_sh "12" "Presentation files" 'ls -la reports/final_presentation.* 2>/dev/null' ;;

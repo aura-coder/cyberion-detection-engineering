@@ -1,0 +1,8 @@
+| multisearch
+[ search EventID=11 TargetFilename="*\\Downloads\\*" TargetFilename IN ("*.exe", "*.dll", "*.scr") | eval event_type="base_win_file_created_in_downloads" ]
+[ search EventID=3 | eval event_type="base_win_network_connection_event" ]
+
+| bin _time span=2m
+| stats dc(event_type) as event_type_count by _time Computer
+
+| search event_type_count >= 2

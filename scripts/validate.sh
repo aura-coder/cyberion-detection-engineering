@@ -20,6 +20,7 @@ fi
 
 for f in rules/sigma/*.yml; do
   base=$(basename "$f" .yml)
+  case "$base" in correlation_*) continue ;; esac
 
   # Splunk
   sigma convert -t splunk $SPLUNK_PIPE --without-pipeline "$f" \
@@ -36,6 +37,19 @@ for f in rules/sigma/*.yml; do
     > "rules/converted/elastic/${base}.eql" 2>/dev/null || \
   sigma convert -t eql --without-pipeline "$f" \
     > "rules/converted/elastic/${base}.eql" 2>/dev/null || echo "  [!] conversion failed: ${base}"
+done
+
+echo "[+] converting correlation rules (Splunk only; Lucene/EQL backends do not support correlation)"
+for c in rules/sigma/correlation_*.yml; do
+  cbase=$(basename "$c" .yml)
+  tmp=$(mktemp -d)
+  cp "$c" "$tmp/"
+  for r in $(awk '/^  rules:/{f=1;next} f&&/^    - /{print $2;next} f{f=0}' "$c"); do
+    cp "rules/sigma/${r}.yml" "$tmp/"
+  done
+  sigma convert -t splunk --without-pipeline "$tmp" > "rules/converted/splunk/${cbase}.spl" 2>/dev/null \
+    || echo "  [!] correlation conversion failed: ${cbase}"
+  rm -rf "$tmp"
 done
 
 echo "[+] removing empty conversions (e.g. temporal correlation rules)"
