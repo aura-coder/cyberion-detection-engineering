@@ -6,6 +6,7 @@ description: Base selection for correlation - Sysmon EID 11 where an executable 
 author: Cyberion Detection Engineering
 date: 2026/04/04
 logsource:
+  category: file_event
   product: windows
 detection:
   selection:

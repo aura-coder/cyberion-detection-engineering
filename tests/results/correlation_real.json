@@ -1,0 +1,24 @@
+{
+ "correlation_win_download_then_external_callback.yml": {
+  "hits": 0,
+  "samples": []
+ },
+ "correlation_win_encoded_powershell_then_external.yml": {
+  "hits": 0,
+  "samples": []
+ },
+ "correlation_win_failed_logon_burst_then_success.yml": {
+  "hits": 1,
+  "samples": [
+   {
+    "group": [
+     "IEUser"
+    ],
+    "start": 1599657503.627952,
+    "files": [
+     "Credential Access/CA_4624_4625_LogonType2_LogonProc_chrome.jsonl"
+    ]
+   }
+  ]
+ }
+}

@@ -6,6 +6,7 @@ description: Base selection for correlation - Sysmon EID 3 network connection.
 author: Cyberion Detection Engineering
 date: 2026/04/04
 logsource:
+  category: network_connection
   product: windows
 detection:
   selection:

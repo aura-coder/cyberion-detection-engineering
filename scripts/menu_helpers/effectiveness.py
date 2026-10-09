@@ -15,4 +15,8 @@ print(f"Standalone detection rules : {len(stand)}")
 print(f"  tested, matched real data: {len(tested)}  ({len(tested)/max(len(stand),1)*100:.0f}%)")
 print(f"  untested / no match      : {len(untested)}")
 print(f"Base building blocks       : {len(base)}  (not counted - they match whole event types)")
-print(f"Correlation rules          : {len(corr)}  (0 real matches; synthetic proof only)")
+try:
+    cr = json.load(open("tests/results/correlation_real.json"))
+    print(f"Correlation rules          : {len(corr)}  (real-corpus hits: " + ", ".join(f"{k[:40]}={v.get('hits', 'n/a')}" for k, v in cr.items()) + ")")
+except FileNotFoundError:
+    print(f"Correlation rules          : {len(corr)}  (run scripts/run_effectiveness.py first)")

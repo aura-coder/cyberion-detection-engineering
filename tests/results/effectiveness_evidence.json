@@ -1,0 +1,469 @@
+{
+ "corpus_dir": "data/processed/evtx-json",
+ "files": 278,
+ "events": 37364,
+ "unparseable_lines": 0,
+ "unsupported_rules": {},
+ "samples": {
+  "base_win_encoded_powershell_execution.yml": [
+   {
+    "file": "Credential Access/discovery_sysmon_1_iis_pwd_and_config_discovery_appcmd.jsonl",
+    "EventRecordID": 5875,
+    "Computer": "IEWIN7",
+    "time": "2019-05-27T01:28:42.711005Z"
+   }
+  ],
+  "base_win_failed_logon_event.yml": [
+   {
+    "file": "Credential Access/CA_4624_4625_LogonType2_LogonProc_chrome.jsonl",
+    "EventRecordID": 137222,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-09-09T13:18:23.627952Z"
+   }
+  ],
+  "base_win_file_created_in_downloads.yml": [
+   {
+    "file": "AutomatedTestingTools/Malware/DE_timestomp_and_dll_sideloading_and_RunPersist.jsonl",
+    "EventRecordID": 6575,
+    "Computer": "IEWIN7",
+    "time": "2019-04-27T15:57:25.868863Z"
+   },
+   {
+    "file": "Defense Evasion/DE_ProcessHerpaderping_Sysmon_11_10_1_7.jsonl",
+    "EventRecordID": 2246491,
+    "Computer": "LAPTOP-JU4M3I0E",
+    "time": "2020-10-27T10:17:18.369342Z"
+   }
+  ],
+  "base_win_network_connection_event.yml": [
+   {
+    "file": "AutomatedTestingTools/PanacheSysmon_vs_AtomicRedTeam01.jsonl",
+    "EventRecordID": 3757,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-19T14:50:25.376030Z"
+   },
+   {
+    "file": "AutomatedTestingTools/PanacheSysmon_vs_AtomicRedTeam01.jsonl",
+    "EventRecordID": 4043,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-19T14:53:46.589404Z"
+   },
+   {
+    "file": "AutomatedTestingTools/PanacheSysmon_vs_AtomicRedTeam01.jsonl",
+    "EventRecordID": 4105,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-19T14:57:58.359021Z"
+   }
+  ],
+  "base_win_powershell_network_connection.yml": [
+   {
+    "file": "AutomatedTestingTools/PanacheSysmon_vs_AtomicRedTeam01.jsonl",
+    "EventRecordID": 3757,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-19T14:50:25.376030Z"
+   },
+   {
+    "file": "AutomatedTestingTools/PanacheSysmon_vs_AtomicRedTeam01.jsonl",
+    "EventRecordID": 4105,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-19T14:57:58.359021Z"
+   },
+   {
+    "file": "AutomatedTestingTools/PanacheSysmon_vs_AtomicRedTeam01.jsonl",
+    "EventRecordID": 4111,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-19T15:11:08.184716Z"
+   }
+  ],
+  "base_win_successful_logon_event.yml": [
+   {
+    "file": "Command and Control/DE_RDP_Tunnel_5156.jsonl",
+    "EventRecordID": 227701,
+    "Computer": "PC01.example.corp",
+    "time": "2019-02-13T18:02:04.426662Z"
+   },
+   {
+    "file": "Command and Control/DE_RDP_Tunnel_5156.jsonl",
+    "EventRecordID": 227708,
+    "Computer": "PC01.example.corp",
+    "time": "2019-02-13T18:02:04.526806Z"
+   },
+   {
+    "file": "Command and Control/DE_RDP_Tunnel_5156.jsonl",
+    "EventRecordID": 227740,
+    "Computer": "PC01.example.corp",
+    "time": "2019-02-13T18:04:43.171852Z"
+   }
+  ],
+  "proc_creation_win_powershell_encoded_command.yml": [
+   {
+    "file": "Credential Access/discovery_sysmon_1_iis_pwd_and_config_discovery_appcmd.jsonl",
+    "EventRecordID": 5875,
+    "Computer": "IEWIN7",
+    "time": "2019-05-27T01:28:42.711005Z"
+   }
+  ],
+  "win_bits_job_created.yml": [
+   {
+    "file": "Command and Control/bits_openvpn.jsonl",
+    "EventRecordID": 7874,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-10-08T14:43:49.877704Z"
+   },
+   {
+    "file": "Command and Control/bits_openvpn.jsonl",
+    "EventRecordID": 7878,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-10-09T11:17:25.792894Z"
+   },
+   {
+    "file": "Command and Control/bits_openvpn.jsonl",
+    "EventRecordID": 7881,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-10-09T11:18:54.513611Z"
+   }
+  ],
+  "win_certutil_download.yml": [
+   {
+    "file": "AutomatedTestingTools/panache_sysmon_vs_EDRTestingScript.jsonl",
+    "EventRecordID": 4980,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-29T21:34:20.459065Z"
+   }
+  ],
+  "win_comsvcs_minidump.yml": [
+   {
+    "file": "Credential Access/sysmon_10_1_memdump_comsvcs_minidump.jsonl",
+    "EventRecordID": 32154,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-08-30T12:54:08.354049Z"
+   }
+  ],
+  "win_exe_created_in_appdata_roaming.yml": [
+   {
+    "file": "AutomatedTestingTools/Malware/DE_timestomp_and_dll_sideloading_and_RunPersist.jsonl",
+    "EventRecordID": 6579,
+    "Computer": "IEWIN7",
+    "time": "2019-04-27T15:57:53.650113Z"
+   },
+   {
+    "file": "AutomatedTestingTools/Malware/DE_timestomp_and_dll_sideloading_and_RunPersist.jsonl",
+    "EventRecordID": 6581,
+    "Computer": "IEWIN7",
+    "time": "2019-04-27T15:57:53.650113Z"
+   },
+   {
+    "file": "AutomatedTestingTools/Malware/sideloading_uacbypass_rundll32_injection_c2.jsonl",
+    "EventRecordID": 417074,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-10-17T11:43:33.449476Z"
+   }
+  ],
+  "win_lsass_mimikatz_log_artifact.yml": [
+   {
+    "file": "Credential Access/CA_Mimikatz_Memssp_Default_Logs_Sysmon_11.jsonl",
+    "EventRecordID": 385052,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-09-11T12:10:22.398726Z"
+   }
+  ],
+  "win_mshta_external_connection.yml": [
+   {
+    "file": "AutomatedTestingTools/panache_sysmon_vs_EDRTestingScript.jsonl",
+    "EventRecordID": 4907,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-29T21:33:20.711067Z"
+   },
+   {
+    "file": "AutomatedTestingTools/panache_sysmon_vs_EDRTestingScript.jsonl",
+    "EventRecordID": 4908,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-29T21:33:20.711201Z"
+   },
+   {
+    "file": "Execution/exec_persist_rundll32_mshta_scheduledtask_sysmon_1_3_11.jsonl",
+    "EventRecordID": 4128,
+    "Computer": "IEWIN7",
+    "time": "2019-05-21T15:32:59.389278Z"
+   }
+  ],
+  "win_office_masquerade_appdata.yml": [
+   {
+    "file": "AutomatedTestingTools/Malware/sideloading_uacbypass_rundll32_injection_c2.jsonl",
+    "EventRecordID": 417076,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-10-17T11:43:33.495498Z"
+   },
+   {
+    "file": "AutomatedTestingTools/Malware/sideloading_uacbypass_rundll32_injection_c2.jsonl",
+    "EventRecordID": 417077,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-10-17T11:43:34.246548Z"
+   },
+   {
+    "file": "AutomatedTestingTools/Malware/sideloading_uacbypass_rundll32_injection_c2.jsonl",
+    "EventRecordID": 417078,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-10-17T11:43:34.246956Z"
+   }
+  ],
+  "win_office_spawns_powershell.yml": [
+   {
+    "file": "AutomatedTestingTools/Malware/sideloading_uacbypass_rundll32_injection_c2.jsonl",
+    "EventRecordID": 417085,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-10-17T11:43:49.229742Z"
+   }
+  ],
+  "win_ping_delay_and_hidden_delete.yml": [
+   {
+    "file": "AutomatedTestingTools/Malware/sideloading_uacbypass_rundll32_injection_c2.jsonl",
+    "EventRecordID": 417085,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-10-17T11:43:49.229742Z"
+   }
+  ],
+  "win_powershell_scriptblock_logged.yml": [
+   {
+    "file": "Credential Access/Powershell_4104_MiniDumpWriteDump_Lsass.jsonl",
+    "EventRecordID": 971,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-06-30T14:24:08.254605Z"
+   },
+   {
+    "file": "Credential Access/phish_windows_credentials_powershell_scriptblockLog_4104.jsonl",
+    "EventRecordID": 1122,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-09-09T13:35:08.655802Z"
+   },
+   {
+    "file": "Credential Access/phish_windows_credentials_powershell_scriptblockLog_4104.jsonl",
+    "EventRecordID": 1123,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-09-09T13:35:09.315230Z"
+   }
+  ],
+  "win_regsvr32_external_connection.yml": [
+   {
+    "file": "AutomatedTestingTools/PanacheSysmon_vs_AtomicRedTeam01.jsonl",
+    "EventRecordID": 4043,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-19T14:53:46.589404Z"
+   },
+   {
+    "file": "AutomatedTestingTools/panache_sysmon_vs_EDRTestingScript.jsonl",
+    "EventRecordID": 4934,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-29T21:33:46.095763Z"
+   },
+   {
+    "file": "Execution/exec_sysmon_lobin_regsvr32_sct.jsonl",
+    "EventRecordID": 16794,
+    "Computer": "IEWIN7",
+    "time": "2019-05-12T18:35:06.562199Z"
+   }
+  ],
+  "win_security_audit_log_cleared.yml": [
+   {
+    "file": "Command and Control/DE_RDP_Tunnel_5156.jsonl",
+    "EventRecordID": 227693,
+    "Computer": "PC01.example.corp",
+    "time": "2019-02-13T18:01:41.593830Z"
+   },
+   {
+    "file": "Credential Access/ACL_ForcePwd_SPNAdd_User_Computer_Accounts.jsonl",
+    "EventRecordID": 198238040,
+    "Computer": "DC1.insecurebank.local",
+    "time": "2019-03-25T09:09:14.916619Z"
+   },
+   {
+    "file": "Credential Access/CA_chrome_firefox_opera_4663.jsonl",
+    "EventRecordID": 4987,
+    "Computer": "IEWIN7",
+    "time": "2019-04-27T19:27:55.274060Z"
+   }
+  ],
+  "win_security_scheduled_task_created.yml": [
+   {
+    "file": "Execution/temp_scheduled_task_4698_4699.jsonl",
+    "EventRecordID": 566836,
+    "Computer": "WIN-77LTAPHIQ1R.example.corp",
+    "time": "2019-03-19T00:02:04.319945Z"
+   },
+   {
+    "file": "Lateral Movement/LM_ScheduledTask_ATSVC_target_host.jsonl",
+    "EventRecordID": 566836,
+    "Computer": "WIN-77LTAPHIQ1R.example.corp",
+    "time": "2019-03-19T00:02:04.319945Z"
+   },
+   {
+    "file": "Privilege Escalation/PrivEsc_SeImpersonatePriv_enabled_back_for_upnp_localsvc_4698.jsonl",
+    "EventRecordID": 282588,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-03-07T13:17:38.534995Z"
+   }
+  ],
+  "win_shadow_copy_execution.yml": [
+   {
+    "file": "AutomatedTestingTools/PanacheSysmon_vs_AtomicRedTeam01.jsonl",
+    "EventRecordID": 4131,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-19T15:11:27.169217Z"
+   },
+   {
+    "file": "AutomatedTestingTools/PanacheSysmon_vs_AtomicRedTeam01.jsonl",
+    "EventRecordID": 4132,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-19T15:11:27.202862Z"
+   },
+   {
+    "file": "Execution/sysmon_exec_from_vss_persistence.jsonl",
+    "EventRecordID": 6188,
+    "Computer": "IEWIN7",
+    "time": "2019-05-27T15:12:54.447494Z"
+   }
+  ],
+  "win_spoolsv_spawns_shell.yml": [],
+  "win_sysmon_create_remote_thread.yml": [
+   {
+    "file": "AutomatedTestingTools/Malware/sideloading_uacbypass_rundll32_injection_c2.jsonl",
+    "EventRecordID": 417080,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-10-17T11:43:36.312645Z"
+   },
+   {
+    "file": "AutomatedTestingTools/Malware/sideloading_uacbypass_rundll32_injection_c2.jsonl",
+    "EventRecordID": 417082,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-10-17T11:43:40.903539Z"
+   },
+   {
+    "file": "AutomatedTestingTools/Malware/sideloading_uacbypass_rundll32_injection_c2.jsonl",
+    "EventRecordID": 417084,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-10-17T11:43:45.130922Z"
+   }
+  ],
+  "win_sysmon_file_create_download_dir.yml": [
+   {
+    "file": "AutomatedTestingTools/Malware/DE_timestomp_and_dll_sideloading_and_RunPersist.jsonl",
+    "EventRecordID": 6575,
+    "Computer": "IEWIN7",
+    "time": "2019-04-27T15:57:25.868863Z"
+   },
+   {
+    "file": "Defense Evasion/DE_ProcessHerpaderping_Sysmon_11_10_1_7.jsonl",
+    "EventRecordID": 2246491,
+    "Computer": "LAPTOP-JU4M3I0E",
+    "time": "2020-10-27T10:17:18.369342Z"
+   },
+   {
+    "file": "Persistence/persist_firefox_comhijack_sysmon_11_13_7_1.jsonl",
+    "EventRecordID": 373,
+    "Computer": "IEWIN7",
+    "time": "2019-05-21T00:35:07.474160Z"
+   }
+  ],
+  "win_sysmon_lsass_access.yml": [
+   {
+    "file": "AutomatedTestingTools/PanacheSysmon_vs_AtomicRedTeam01.jsonl",
+    "EventRecordID": 4112,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-19T15:11:16.487990Z"
+   },
+   {
+    "file": "Credential Access/CA_sysmon_hashdump_cmd_meterpreter.jsonl",
+    "EventRecordID": 9065,
+    "Computer": "IEWIN7",
+    "time": "2019-04-30T12:43:43.784179Z"
+   },
+   {
+    "file": "Credential Access/babyshark_mimikatz_powershell.jsonl",
+    "EventRecordID": 22,
+    "Computer": "IEWIN7",
+    "time": "2019-04-18T16:58:14.811881Z"
+   }
+  ],
+  "win_sysmon_run_key_persistence.yml": [
+   {
+    "file": "AutomatedTestingTools/Malware/DE_timestomp_and_dll_sideloading_and_RunPersist.jsonl",
+    "EventRecordID": 6593,
+    "Computer": "IEWIN7",
+    "time": "2019-04-27T15:57:53.884488Z"
+   },
+   {
+    "file": "AutomatedTestingTools/Malware/sideloading_injection_persistence_run_key.jsonl",
+    "EventRecordID": 416056,
+    "Computer": "MSEDGEWIN10",
+    "time": "2020-10-15T13:17:02.736849Z"
+   },
+   {
+    "file": "AutomatedTestingTools/PanacheSysmon_vs_AtomicRedTeam01.jsonl",
+    "EventRecordID": 3595,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-19T14:44:53.292455Z"
+   }
+  ],
+  "win_system_new_service_installed.yml": [
+   {
+    "file": "Lateral Movement/LM_Remote_Service02_7045.jsonl",
+    "EventRecordID": 4480,
+    "Computer": "WIN-77LTAPHIQ1R.example.corp",
+    "time": "2019-03-03T09:20:28.621489Z"
+   },
+   {
+    "file": "Lateral Movement/LM_Remote_Service02_7045.jsonl",
+    "EventRecordID": 4482,
+    "Computer": "WIN-77LTAPHIQ1R.example.corp",
+    "time": "2019-03-03T09:24:24.699653Z"
+   },
+   {
+    "file": "Lateral Movement/LM_Remote_Service02_7045.jsonl",
+    "EventRecordID": 6045,
+    "Computer": "WIN-77LTAPHIQ1R.example.corp",
+    "time": "2019-03-19T00:41:29.008933Z"
+   }
+  ],
+  "win_winrm_session_created.yml": [],
+  "win_wmi_impacket_redirect.yml": [
+   {
+    "file": "Lateral Movement/LM_wmiexec_impacket_sysmon_whoami.jsonl",
+    "EventRecordID": 9826,
+    "Computer": "IEWIN7",
+    "time": "2019-04-30T20:32:51.168589Z"
+   },
+   {
+    "file": "Lateral Movement/LM_wmiexec_impacket_sysmon_whoami.jsonl",
+    "EventRecordID": 9827,
+    "Computer": "IEWIN7",
+    "time": "2019-04-30T20:32:51.246714Z"
+   },
+   {
+    "file": "Lateral Movement/LM_wmiexec_impacket_sysmon_whoami.jsonl",
+    "EventRecordID": 9828,
+    "Computer": "IEWIN7",
+    "time": "2019-04-30T20:32:51.324839Z"
+   }
+  ],
+  "win_wmi_process_call_create.yml": [
+   {
+    "file": "AutomatedTestingTools/panache_sysmon_vs_EDRTestingScript.jsonl",
+    "EventRecordID": 4998,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-07-29T21:34:36.534474Z"
+   },
+   {
+    "file": "Credential Access/sysmon_10_1_memdump_comsvcs_minidump.jsonl",
+    "EventRecordID": 32154,
+    "Computer": "MSEDGEWIN10",
+    "time": "2019-08-30T12:54:08.354049Z"
+   },
+   {
+    "file": "Execution/sysmon_exec_from_vss_persistence.jsonl",
+    "EventRecordID": 6192,
+    "Computer": "IEWIN7",
+    "time": "2019-05-27T15:12:54.632117Z"
+   }
+  ]
+ }
+}
