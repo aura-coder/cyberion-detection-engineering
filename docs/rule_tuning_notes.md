@@ -6,7 +6,7 @@ Three documented false-positive tuning passes. Each follows the PRD 4.8 format: 
 
 ## Tuning Pass 1 - win_exe_created_in_appdata_roaming.yml
 
-Rule ID: 10000009-0009-0009-0009-000000000009
+Rule ID: 2039b043-6d02-4564-9290-8e690d94dce0
 Technique: T1036.005
 
 ### Observed false positive
@@ -25,7 +25,7 @@ An attacker who names their loader slack.exe and drops it in the exact Electron 
 
 ## Tuning Pass 2 - win_sysmon_lsass_access.yml
 
-Rule ID: 66666666-6666-6666-6666-666666666666
+Rule ID: 89b16a59-bd06-4fd2-abc9-751e3df44f40
 Technique: T1003.001
 
 ### Observed false positive
@@ -44,7 +44,7 @@ An attacker who injects into one of these signed processes and then accesses LSA
 
 ## Tuning Pass 3 - win_sysmon_file_create_download_dir.yml
 
-Rule ID: 77777777-7777-7777-7777-777777777777
+Rule ID: 3a637a4d-2478-448c-9250-eb6436bac56c
 Technique: T1105
 
 ### Observed false positive

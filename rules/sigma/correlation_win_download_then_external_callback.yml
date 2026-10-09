@@ -1,5 +1,5 @@
 title: Correlation - Download Then External Callback
-id: 30000006-0006-0006-0006-000000000006
+id: b9665f38-ed97-41f8-8fd0-07d0430c7cf1
 status: experimental
 description: Correlation. An executable written into a Downloads folder followed closely by an outbound network connection, consistent with download-and-execute + C2 callback chain.
 references:
@@ -15,6 +15,8 @@ correlation:
   rules:
     - base_win_file_created_in_downloads
     - base_win_network_connection_event
+  group-by:
+    - Computer
   timespan: 2m
 falsepositives:
   - Legitimate software updaters that download into Downloads and immediately phone home

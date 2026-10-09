@@ -1,5 +1,5 @@
 title: Base - Windows Successful Logon Event
-id: 30000002-0002-0002-0002-000000000002
+id: 404d89fb-206a-4026-943c-442bebec91ab
 status: test
 name: base_win_successful_logon_event
 description: Base selection for correlation - Windows Security successful logon (4624).

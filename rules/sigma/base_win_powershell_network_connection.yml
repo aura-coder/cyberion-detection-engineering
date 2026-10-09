@@ -1,5 +1,5 @@
 title: Base - PowerShell Network Connection
-id: 30000008-0008-0008-0008-000000000008
+id: 50febf68-1f08-48f9-8843-ac113cd26908
 status: test
 name: base_win_powershell_network_connection
 description: Base selection for correlation - PowerShell making an outbound network connection.

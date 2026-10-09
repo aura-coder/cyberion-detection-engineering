@@ -1,5 +1,5 @@
 title: Ping Loopback Sleep Then Delete Hidden File
-id: 10000008-0008-0008-0008-000000000008
+id: 1db012ef-3699-4cf3-b0b3-e9495a8f80ac
 status: experimental
 description: Detects the classic malware anti-sandbox pattern of pinging loopback as a sleep substitute followed by forced deletion of a hidden file, commonly observed in macro droppers and loaders.
 references:

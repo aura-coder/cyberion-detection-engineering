@@ -1,5 +1,5 @@
 title: Certutil Used to Download Remote File
-id: 10000006-0006-0006-0006-000000000006
+id: b193dfcf-3928-4677-afe7-72e380c3d744
 status: experimental
 description: Detects certutil.exe invoked with URL cache or verifyctl download flags, a common LOLBin download cradle.
 references:

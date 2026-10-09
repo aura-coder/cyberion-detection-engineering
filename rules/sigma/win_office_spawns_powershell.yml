@@ -1,5 +1,5 @@
-title: Office Application Spawns PowerShell
-id: cccccccc-3333-3333-3333-333333333333
+title: Office Application Spawns Shell or Script Host
+id: fde1ffa8-4961-4521-99b3-fa2fa06e91ec
 status: experimental
 description: Detects an Office application spawning PowerShell, a common pattern in malicious macro-based phishing.
 references:

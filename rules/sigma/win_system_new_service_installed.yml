@@ -1,5 +1,5 @@
 title: New Windows Service Installed
-id: 44444444-4444-4444-4444-444444444444
+id: f766a0f4-5a12-4c9c-81f8-512e7807f5c4
 status: experimental
 description: Detects installation of a new Windows service via Service Control Manager event 7045, a common persistence and privilege escalation technique.
 references:

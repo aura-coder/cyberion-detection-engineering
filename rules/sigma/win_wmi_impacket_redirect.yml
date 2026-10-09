@@ -1,5 +1,5 @@
 title: WMI Process with Impacket-Style Output Redirect
-id: 10000002-0002-0002-0002-000000000002
+id: 4545fc14-e164-4d6d-a520-8ec5051f1484
 status: experimental
 description: Detects WmiPrvSE.exe spawning cmd.exe with output redirected to an ADMIN$ or C$ share, characteristic of Impacket wmiexec.py and similar remote execution tools.
 references:

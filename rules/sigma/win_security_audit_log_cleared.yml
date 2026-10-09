@@ -1,5 +1,5 @@
 title: Windows Security Audit Log Cleared
-id: 22222222-2222-2222-2222-222222222222
+id: 52c6bc03-5f31-4952-8bad-7251f5a3a8a6
 status: experimental
 description: Detects clearing of the Windows Security event log, a common defense evasion technique used to remove evidence of intrusion activity.
 references:

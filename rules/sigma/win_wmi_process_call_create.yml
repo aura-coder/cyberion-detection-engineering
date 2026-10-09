@@ -1,5 +1,5 @@
 title: WMI Process Creation
-id: ffffffff-6666-6666-6666-666666666666
+id: 7b75f416-a1eb-4f82-a8e9-492e03a2b5f1
 status: experimental
 description: Detects process creation via WMI, commonly used for lateral movement and remote execution.
 references:

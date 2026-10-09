@@ -1,5 +1,5 @@
 title: Suspicious Process Access to LSASS
-id: 66666666-6666-6666-6666-666666666666
+id: 89b16a59-bd06-4fd2-abc9-751e3df44f40
 status: experimental
 description: Detects process access to lsass.exe via Sysmon event 10, a strong indicator of credential dumping activity.
 references:

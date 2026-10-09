@@ -1,13 +1,18 @@
-import json
-from pathlib import Path
-d = json.loads(Path("tests/results/effectiveness.json").read_text())
-m = sum(1 for v in d.values() if v > 0); t = len(d)
-print(f"{'Rule':<56s} {'Matches':>8s}")
-print("-" * 66)
-for k, v in d.items():
-    mark = "OK" if v > 0 else "no match"
-    print(f"{k:<56s} {v:>4d}   {mark}")
+import glob, json, os
+d = json.load(open("tests/results/effectiveness.json"))
+files = sorted(os.path.basename(f) for f in glob.glob("rules/sigma/*.yml"))
+base = [f for f in files if f.startswith("base_")]
+corr = [f for f in files if f.startswith("correlation_")]
+stand = [f for f in files if f not in base and f not in corr]
+tested = [f for f in stand if d.get(f, 0) > 0]
+untested = [f for f in stand if f not in tested]
+print(f"{'Standalone rule':<52s} {'Matches':>8s}")
+print("-" * 62)
+for f in stand:
+    print(f"{f:<52s} {d.get(f, 0):>8d}   {'OK' if f in tested else 'UNTESTED'}")
 print()
-print(f"Rules tested:  {t}")
-print(f"Rules matched: {m}")
-print(f"Success rate:  {m/t*100:.1f}%")
+print(f"Standalone detection rules : {len(stand)}")
+print(f"  tested, matched real data: {len(tested)}  ({len(tested)/max(len(stand),1)*100:.0f}%)")
+print(f"  untested / no match      : {len(untested)}")
+print(f"Base building blocks       : {len(base)}  (not counted - they match whole event types)")
+print(f"Correlation rules          : {len(corr)}  (0 real matches; synthetic proof only)")

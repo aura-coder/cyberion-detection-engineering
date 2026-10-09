@@ -1,5 +1,5 @@
 title: MSHTA External Network Connection
-id: 10000004-0004-0004-0004-000000000004
+id: 0ea1510d-1303-43ef-94fe-a110c06b3f27
 status: experimental
 description: Detects mshta.exe making outbound network connections, indicative of HTA-based C2 or payload download.
 references:

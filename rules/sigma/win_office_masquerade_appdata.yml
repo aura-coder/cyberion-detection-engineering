@@ -1,5 +1,5 @@
 title: Office Binary Running From User AppData
-id: 10000001-0001-0001-0001-000000000001
+id: a0ce1428-af05-4226-862a-04ddd69dc605
 status: experimental
 description: Detects Office executables (WINWORD, EXCEL, POWERPNT, OUTLOOK) running from AppData or user-writable locations, a common masquerading technique used by macro droppers and loaders.
 references:

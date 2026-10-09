@@ -1,5 +1,5 @@
 title: Correlation - Encoded PowerShell Then External Connection
-id: 30000009-0009-0009-0009-000000000009
+id: 60039bab-e425-400e-bbad-5cb6e2151ccc
 status: experimental
 description: Correlation. Encoded PowerShell execution followed by an outbound network connection from the same image within a short window. Indicates a download cradle or C2 stager.
 references:
@@ -15,6 +15,8 @@ correlation:
   rules:
     - base_win_encoded_powershell_execution
     - base_win_powershell_network_connection
+  group-by:
+    - Computer
   timespan: 2m
 falsepositives:
   - Legitimate admin scripts that call home after execution

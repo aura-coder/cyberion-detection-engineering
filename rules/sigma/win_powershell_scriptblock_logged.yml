@@ -1,5 +1,5 @@
 title: PowerShell Script Block Logged
-id: 55555555-5555-5555-5555-555555555555
+id: 46173d9b-6b4b-45a2-a0aa-783902d49d25
 status: experimental
 description: Detects PowerShell script block logging (event 4104). Useful for content-based detection of malicious scripts even when obfuscation is applied at the invocation layer.
 references:

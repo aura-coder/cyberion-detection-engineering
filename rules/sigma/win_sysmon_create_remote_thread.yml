@@ -1,5 +1,5 @@
 title: CreateRemoteThread Remote Process Injection
-id: 99999999-9999-9999-9999-999999999999
+id: fc5da6b9-9c7b-476a-a8c6-11ec0800b036
 status: experimental
 description: Detects CreateRemoteThread calls targeting another process, a hallmark of process injection.
 references:

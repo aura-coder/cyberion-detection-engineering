@@ -1,5 +1,5 @@
 title: Correlation - Failed Logon Burst Then Success
-id: 30000003-0003-0003-0003-000000000003
+id: 94a00aab-4b14-4813-bac2-177ab01bfa1f
 status: experimental
 description: Correlation. Multiple failed logons for the same account followed by a successful logon within 5 minutes. Indicates brute force leading to credential compromise.
 references:

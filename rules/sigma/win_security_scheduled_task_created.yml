@@ -1,5 +1,5 @@
 title: Windows Scheduled Task Created
-id: 33333333-3333-3333-3333-333333333333
+id: 2dda7acd-c07a-45a9-bfbd-f363612000c4
 status: experimental
 description: Detects creation of a scheduled task via Security event 4698, commonly used for persistence and delayed execution.
 references:

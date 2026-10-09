@@ -1,33 +1,28 @@
 Tactic,Technique ID,Technique Name,Status,Supporting Rule ID,Notes
-Execution,T1059.001,PowerShell,Covered,11111111-1111-1111-1111-111111111111,Encoded command execution
-Defense Evasion,T1027,Obfuscated Files or Information,Covered,11111111-1111-1111-1111-111111111111,Encoded command obfuscation
-Defense Evasion,T1070,Indicator Removal,Covered,22222222-2222-2222-2222-222222222222,Security event 1102
-Persistence,T1053.005,Scheduled Task,Covered,33333333-3333-3333-3333-333333333333,Security event 4698
-Persistence,T1543.003,Windows Service,Covered,44444444-4444-4444-4444-444444444444,SCM event 7045
-Execution,T1059.001,PowerShell Script Block,Covered,55555555-5555-5555-5555-555555555555,PowerShell event 4104
-Credential Access,T1003.001,LSASS Memory,Covered,66666666-6666-6666-6666-666666666666,Sysmon event 10
-Command and Control,T1105,Ingress Tool Transfer,Covered,77777777-7777-7777-7777-777777777777,Sysmon event 11
-Persistence,T1547.001,Registry Run Keys,Covered,88888888-8888-8888-8888-888888888888,Sysmon event 13
-Defense Evasion,T1055,Process Injection,Covered,99999999-9999-9999-9999-999999999999,Sysmon event 8
-Lateral Movement,T1021.006,WinRM,Covered,aaaaaaaa-1111-1111-1111-111111111111,WinRM event 6
-Defense Evasion,T1197,BITS Jobs,Covered,bbbbbbbb-2222-2222-2222-222222222222,BITS event 3
-Execution,T1204.002,Malicious File,Covered,cccccccc-3333-3333-3333-333333333333,Office parent process
-Privilege Escalation,T1068,Exploitation for Privilege Escalation,Covered,dddddddd-4444-4444-4444-444444444444,spoolsv.exe child process
-Credential Access,T1003.001,Comsvcs MiniDump,Covered,eeeeeeee-5555-5555-5555-555555555555,CommandLine pattern
-Execution,T1047,Windows Management Instrumentation,Covered,ffffffff-6666-6666-6666-666666666666,WmiPrvSE parent process
-Defense Evasion,T1036.005,Match Legitimate Name or Location,Covered,10000001-0001-0001-0001-000000000001,From Hunt 001
-Execution,T1047,Windows Management Instrumentation Impacket,Covered,10000002-0002-0002-0002-000000000002,From Hunt 001
-Defense Evasion,T1564.002,Hide Artifacts via Shadow Copy,Covered,10000003-0003-0003-0003-000000000003,From Hunt 001
-Command and Control,T1071.001,Web Protocols,Covered,10000004-0004-0004-0004-000000000004,mshta external
-Defense Evasion,T1218.005,Mshta,Covered,10000004-0004-0004-0004-000000000004,From Hunt 002
-Defense Evasion,T1218.010,Regsvr32,Covered,10000005-0005-0005-0005-000000000005,From Hunt 002
-Command and Control,T1105,Ingress Tool Transfer via certutil,Covered,10000006-0006-0006-0006-000000000006,From Hunt 002
-Defense Evasion,T1055.002,Portable Executable Injection,Covered,10000007-0007-0007-0007-000000000007,Cobalt Strike artifact
-Defense Evasion,T1070.004,Indicator Removal File Deletion,Covered,10000008-0008-0008-0008-000000000008,From Incident 002
-Defense Evasion,T1564.001,Hide Artifacts via Hidden Files,Covered,10000008-0008-0008-0008-000000000008,From Incident 002
-Defense Evasion,T1036.005,Masquerading in AppData Roaming,Covered,10000009-0009-0009-0009-000000000009,From Incident 002
+Execution,T1059.001,PowerShell,Partially Covered,3998e9c6-eb83-4c1d-bbed-f98557fc85f2,"Encoded command execution; PowerShell event 4104; Correlation rule (temporal, 2 min) | also: 46173d9b-6b4b-45a2-a0aa-783902d49d25, correlation_win_encoded_powershell_then_external.yml [auto-downgraded: supporting rule not validated on real telemetry yet]"
+Defense Evasion,T1027,Obfuscated Files or Information,Partially Covered,3998e9c6-eb83-4c1d-bbed-f98557fc85f2,Encoded command obfuscation [auto-downgraded: supporting rule not validated on real telemetry yet]
+Defense Evasion,T1070,Indicator Removal,Covered,52c6bc03-5f31-4952-8bad-7251f5a3a8a6,Security event 1102
+Persistence,T1053.005,Scheduled Task,Covered,2dda7acd-c07a-45a9-bfbd-f363612000c4,Security event 4698
+Persistence,T1543.003,Windows Service,Covered,f766a0f4-5a12-4c9c-81f8-512e7807f5c4,SCM event 7045
+Credential Access,T1003.001,LSASS Memory,Partially Covered,89b16a59-bd06-4fd2-abc9-751e3df44f40,Sysmon event 10; CommandLine pattern | also: c74b173a-dc9c-4813-bdf0-a0a818e27308 [auto-downgraded: supporting rule not validated on real telemetry yet]
+Command and Control,T1105,Ingress Tool Transfer,Partially Covered,3a637a4d-2478-448c-9250-eb6436bac56c,Sysmon event 11; From Hunt 002 | also: b193dfcf-3928-4677-afe7-72e380c3d744 [auto-downgraded: supporting rule not validated on real telemetry yet]
+Persistence,T1547.001,Registry Run Keys,Partially Covered,6a91e0fa-d76d-4127-9570-368f75eb819d,Sysmon event 13 [auto-downgraded: supporting rule not validated on real telemetry yet]
+Defense Evasion,T1055,Process Injection,Partially Covered,fc5da6b9-9c7b-476a-a8c6-11ec0800b036,Sysmon event 8 [auto-downgraded: supporting rule not validated on real telemetry yet]
+Lateral Movement,T1021.006,WinRM,Partially Covered,b4040069-9e15-48f5-af4b-43841c0909c2,WinRM event 6 [auto-downgraded: supporting rule not validated on real telemetry yet]
+Defense Evasion,T1197,BITS Jobs,Partially Covered,5f13bae9-011f-4636-9123-8e9551bb6d8d,BITS event 3 [auto-downgraded: supporting rule not validated on real telemetry yet]
+Execution,T1204.002,Malicious File,Partially Covered,fde1ffa8-4961-4521-99b3-fa2fa06e91ec,Office parent process [auto-downgraded: supporting rule not validated on real telemetry yet]
+Privilege Escalation,T1068,Exploitation for Privilege Escalation,Partially Covered,31949f00-e8ed-43cc-b7bb-e7fbe5bd7511,spoolsv.exe child process [auto-downgraded: supporting rule not validated on real telemetry yet]
+Execution,T1047,Windows Management Instrumentation,Partially Covered,7b75f416-a1eb-4f82-a8e9-492e03a2b5f1,WmiPrvSE parent process; From Hunt 001 | also: 4545fc14-e164-4d6d-a520-8ec5051f1484 [auto-downgraded: supporting rule not validated on real telemetry yet]
+Defense Evasion,T1036.005,Match Legitimate Name or Location,Covered,a0ce1428-af05-4226-862a-04ddd69dc605,From Hunt 001; From Incident 002 | also: 2039b043-6d02-4564-9290-8e690d94dce0
+Defense Evasion,T1564.002,Hide Artifacts via Shadow Copy,Covered,cf9701d6-008a-43c1-be71-8b0ec7b10379,From Hunt 001
+Command and Control,T1071.001,Web Protocols,Covered,0ea1510d-1303-43ef-94fe-a110c06b3f27,mshta external
+Defense Evasion,T1218.005,Mshta,Covered,0ea1510d-1303-43ef-94fe-a110c06b3f27,From Hunt 002
+Defense Evasion,T1218.010,Regsvr32,Covered,96a71048-0c31-4d54-a2a8-ea3a8b022433,From Hunt 002
+Defense Evasion,T1055.002,Portable Executable Injection,Covered,938c8de4-492a-4f36-8ae9-b753993fc500,Cobalt Strike artifact
+Defense Evasion,T1070.004,Indicator Removal File Deletion,Covered,1db012ef-3699-4cf3-b0b3-e9495a8f80ac,From Incident 002
+Defense Evasion,T1564.001,Hide Artifacts via Hidden Files,Covered,1db012ef-3699-4cf3-b0b3-e9495a8f80ac,From Incident 002
 Execution,T1059.003,Windows Command Shell,Partially Covered,win_ping_delay_and_hidden_delete.yml,Only cmd.exe with anti-sandbox pattern; generic shell execution not covered
-Credential Access,T1110,Brute Force,Partially Covered,correlation_win_failed_logon_burst_then_success.yml,Correlation rule detects burst then success; single-source lockout alerts not covered
+Credential Access,T1110,Brute Force,Partially Covered,correlation_win_failed_logon_burst_then_success.yml,"Correlation rule detects burst then success; single-source lockout alerts not covered; Correlation rule (temporal, 5 min, grouped by TargetUserName)"
 Discovery,T1087,Account Discovery,Not Covered,,No rule for net user / whoami enumeration patterns
 Discovery,T1082,System Information Discovery,Not Covered,,No rule for systeminfo / hostname reconnaissance
 Discovery,T1018,Remote System Discovery,Not Covered,,No rule for net view / ping sweeps
@@ -36,6 +31,4 @@ Exfiltration,T1041,Exfiltration Over C2 Channel,Not Covered,,No rule for anomalo
 Impact,T1486,Data Encrypted for Impact,Not Covered,,No rule for mass file encryption or ransom note creation
 Initial Access,T1566,Phishing,Partially Covered,win_office_spawns_powershell.yml,Detects Office spawning shells; no email gateway telemetry in corpus
 Lateral Movement,T1021.001,RDP,Partially Covered,win_winrm_session_created.yml,WinRM covered; RDP session events not analysed
-Credential Access,T1110,Brute Force,Covered,correlation_win_failed_logon_burst_then_success.yml,"Correlation rule (temporal, 5 min, grouped by TargetUserName)"
-Command and Control,T1071,Application Layer Protocol,Covered,correlation_win_download_then_external_callback.yml,"Correlation rule (temporal, 2 min)"
-Execution,T1059.001,PowerShell Encoded + C2 Correlation,Covered,correlation_win_encoded_powershell_then_external.yml,"Correlation rule (temporal, 2 min)"
+Command and Control,T1071,Application Layer Protocol,Partially Covered,correlation_win_download_then_external_callback.yml,"Correlation rule (temporal, 2 min) [auto-downgraded: supporting rule not validated on real telemetry yet]"

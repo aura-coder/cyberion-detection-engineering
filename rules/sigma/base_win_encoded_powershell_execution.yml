@@ -1,5 +1,5 @@
 title: Base - Encoded PowerShell Execution
-id: 30000007-0007-0007-0007-000000000007
+id: 7d841d45-bc1e-4d68-bfad-972e4c2d27da
 status: test
 name: base_win_encoded_powershell_execution
 description: Base selection for correlation - encoded PowerShell invocation.

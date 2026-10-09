@@ -1,5 +1,5 @@
 title: Base - Windows Failed Logon Event
-id: 30000001-0001-0001-0001-000000000001
+id: 137382a3-cac2-4657-aa77-47b33e7fb8d5
 status: test
 name: base_win_failed_logon_event
 description: Base selection for correlation - Windows Security failed logon (4625).

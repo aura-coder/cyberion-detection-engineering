@@ -1,5 +1,5 @@
 title: Process Execution From Volume Shadow Copy
-id: 10000003-0003-0003-0003-000000000003
+id: cf9701d6-008a-43c1-be71-8b0ec7b10379
 status: experimental
 description: Detects execution of a process whose path points into a Volume Shadow Copy via the GLOBALROOT device path, a technique used to hide malicious binaries from path-based controls and antivirus.
 references:

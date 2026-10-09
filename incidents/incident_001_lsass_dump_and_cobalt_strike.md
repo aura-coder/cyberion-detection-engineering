@@ -104,9 +104,9 @@ The `mimilsa.log` file created by `lsass.exe` on 2020-09-11 is the **default log
   "file": "C:\\Windows\\System32\\mimilsa.log"
 }       Detection rule that fired
 
-    win_comsvcs_minidump.yml (ID eeeeeeee-5555-5555-5555-555555555555) — matches the primary event.
+    win_comsvcs_minidump.yml (ID c74b173a-dc9c-4813-bdf0-a0a818e27308) — matches the primary event.
 
-    win_lsass_mimikatz_log_artifact.yml (ID 10000007-0007-0007-0007-000000000007) — matches the CS artifact.
+    win_lsass_mimikatz_log_artifact.yml (ID 938c8de4-492a-4f36-8ae9-b753993fc500) — matches the CS artifact.
 
 Impact Assessment
 Asset	Impact

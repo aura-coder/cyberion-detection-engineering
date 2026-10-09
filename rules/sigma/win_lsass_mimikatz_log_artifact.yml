@@ -1,5 +1,5 @@
 title: LSASS Writes Mimikatz Log Artifact
-id: 10000007-0007-0007-0007-000000000007
+id: 938c8de4-492a-4f36-8ae9-b753993fc500
 status: experimental
 description: Detects lsass.exe creating a file matching mimikatz/cobalt-strike log naming patterns (mimilsa.log, mimi*.log), strong evidence of a beacon injected into the LSASS process.
 references:

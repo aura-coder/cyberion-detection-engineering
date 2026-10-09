@@ -52,9 +52,9 @@ c_rules()   { ls rules/sigma/*.yml 2>/dev/null | wc -l | tr -d ' '; }
 c_corr()    { grep -l '^correlation:' rules/sigma/*.yml 2>/dev/null | wc -l | tr -d ' '; }
 c_hunts()   { ls hunts/*.md 2>/dev/null | grep -v template | wc -l | tr -d ' '; }
 c_inc()     { ls incidents/*.md 2>/dev/null | grep -v template | wc -l | tr -d ' '; }
-c_cov()     { tail -n +2 coverage/attack_coverage.csv 2>/dev/null | wc -l | tr -d ' '; }
+c_cov()     { tail -n +2 coverage/attack_coverage.csv 2>/dev/null | cut -d, -f2 | sort -u | wc -l | tr -d ' '; }
 c_commits() { git rev-list --count HEAD 2>/dev/null || echo 0; }
-c_conv()    { ls rules/converted/splunk/*.spl rules/converted/elastic/*.lucene rules/converted/elastic/*.eql 2>/dev/null | wc -l | tr -d ' '; }
+c_conv()    { find rules/converted -type f \( -name '*.spl' -o -name '*.lucene' -o -name '*.eql' \) -size +2c 2>/dev/null | wc -l | tr -d ' '; }
 
 
 # ---------- Welcome / idle state for right pane ----------
@@ -75,7 +75,7 @@ draw_idle_right() {
   scol 10 "$RIGHT_COL" "" "$RIGHT_W"
 
   scol 11 "$RIGHT_COL" "  ${SKY}▸${NC} ${BOLD}${WHITE}[3]${NC}  Rule effectiveness" "$RIGHT_W"
-  scol 12 "$RIGHT_COL" "       ${DIM}17 rules tested against 34,870 real attacker events${NC}" "$RIGHT_W"
+  scol 12 "$RIGHT_COL" "       ${DIM}Standalone rules tested on 34,870 real attacker events${NC}" "$RIGHT_W"
   scol 13 "$RIGHT_COL" "" "$RIGHT_W"
 
   scol 14 "$RIGHT_COL" "  ${SKY}▸${NC} ${BOLD}${WHITE}[4]${NC}  ATT&CK coverage matrix" "$RIGHT_W"

@@ -23,20 +23,23 @@ for f in rules/sigma/*.yml; do
 
   # Splunk
   sigma convert -t splunk $SPLUNK_PIPE --without-pipeline "$f" \
-    > "rules/converted/splunk/${base}.spl" 2>/dev/null || true
+    > "rules/converted/splunk/${base}.spl" 2>/dev/null || echo "  [!] conversion failed: ${base}"
 
   # Lucene (ECS)
   sigma convert -t lucene -p ecs_windows "$f" \
     > "rules/converted/elastic/${base}.lucene" 2>/dev/null || \
   sigma convert -t lucene --without-pipeline "$f" \
-    > "rules/converted/elastic/${base}.lucene" 2>/dev/null || true
+    > "rules/converted/elastic/${base}.lucene" 2>/dev/null || echo "  [!] conversion failed: ${base}"
 
   # EQL (ECS)
   sigma convert -t eql -p ecs_windows "$f" \
     > "rules/converted/elastic/${base}.eql" 2>/dev/null || \
   sigma convert -t eql --without-pipeline "$f" \
-    > "rules/converted/elastic/${base}.eql" 2>/dev/null || true
+    > "rules/converted/elastic/${base}.eql" 2>/dev/null || echo "  [!] conversion failed: ${base}"
 done
+
+echo "[+] removing empty conversions (e.g. temporal correlation rules)"
+find rules/converted -type f -size -3c -print -delete | sed 's/^/  empty conversion removed: /'
 
 echo "[+] yaml lint"
 python - <<'PY'

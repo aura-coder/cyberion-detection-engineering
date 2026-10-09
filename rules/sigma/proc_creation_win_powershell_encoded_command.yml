@@ -1,5 +1,5 @@
 title: PowerShell Encoded Command Execution
-id: 11111111-1111-1111-1111-111111111111
+id: 3998e9c6-eb83-4c1d-bbed-f98557fc85f2
 status: experimental
 description: Detects PowerShell with encoded command execution, commonly used to obfuscate malicious scripts.
 references:

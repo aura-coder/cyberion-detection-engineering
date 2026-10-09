@@ -1,5 +1,5 @@
 title: Credential Dump via Comsvcs MiniDump
-id: eeeeeeee-5555-5555-5555-555555555555
+id: c74b173a-dc9c-4813-bdf0-a0a818e27308
 status: experimental
 description: Detects abuse of comsvcs.dll MiniDump export to dump LSASS process memory, a known credential access technique.
 references:

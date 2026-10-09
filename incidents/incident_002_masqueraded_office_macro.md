@@ -75,8 +75,8 @@ cmd /c ping 127.0.0.1 && del del /F /Q /A:H "C:\Users\IEUser\AppData\Roaming\wwl
 
 ### Detection rule that fired
 
-- `win_office_masquerade_appdata.yml` (ID `10000001-0001-0001-0001-000000000001`) — matches the masqueraded WINWORD parent.
-- `win_office_spawns_powershell.yml` (ID `cccccccc-3333-3333-3333-333333333333`) — would fire if the child were PowerShell. In this case child is `cmd.exe`, so add a variant rule to cover cmd too.
+- `win_office_masquerade_appdata.yml` (ID `a0ce1428-af05-4226-862a-04ddd69dc605`) — matches the masqueraded WINWORD parent.
+- `win_office_spawns_powershell.yml` (ID `fde1ffa8-4961-4521-99b3-fa2fa06e91ec`) — would fire if the child were PowerShell. In this case child is `cmd.exe`, so add a variant rule to cover cmd too.
 
 ## Impact Assessment
 

@@ -1,5 +1,5 @@
 title: Spoolsv Spawns Shell Process
-id: dddddddd-4444-4444-4444-444444444444
+id: 31949f00-e8ed-43cc-b7bb-e7fbe5bd7511
 status: experimental
 description: Detects the print spooler service (spoolsv.exe) spawning a shell or script interpreter, a strong indicator of print spooler exploitation or abuse.
 references:
